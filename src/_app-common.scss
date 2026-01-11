@@ -41,3 +41,85 @@
 .nt-drawer__header-image {
   color: const(grey);
 }
+
+// Purple Theme
+.bg-purple {
+    background-color: #6200EE; // Material Purple 500
+}
+.bg-purple-light {
+    background-color: #7E3FF2; // Lighter purple
+}
+.text-white {
+    color: white;
+}
+.text-white-50 {
+    color: rgba(255, 255, 255, 0.5);
+}
+.text-blue {
+    color: #448AFF;
+}
+.bg-green {
+    background-color: #00E676; // Bright Green
+}
+.bg-red {
+    background-color: #D32F2F; // Red
+}
+.bg-white-trans {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+    placeholder-color: rgba(255, 255, 255, 0.6);
+    border-width: 1;
+    border-color: rgba(255, 255, 255, 0.3);
+    border-radius: 5;
+}
+
+// Card style
+.card {
+    border-radius: 10;
+}
+
+// Icon background for the "Feng" logo
+.icon-bg {
+    background-color: #FF5722; // Orange/Red
+    color: white;
+    border-radius: 5;
+    padding: 5;
+    width: 40;
+    height: 40;
+    text-align: center;
+    vertical-align: center;
+}
+
+// Override Action Bar color
+ActionBar {
+    background-color: #6200EE;
+    color: white;
+}
+
+// Side Drawer Header
+.nt-drawer__header {
+    background-color: #6200EE;
+    color: white;
+    
+    &-image {
+        color: white;
+    }
+    
+    &-brand {
+        color: white;
+    }
+    
+    &-footnote {
+        color: white;
+    }
+}
+
+// Side Drawer Item Selected
+.nt-drawer__list-item {
+    &.-selected {
+        color: #6200EE;
+        .nt-icon {
+            color: #6200EE;
+        }
+    }
+}

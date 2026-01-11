@@ -2,8 +2,8 @@
   <GridLayout tkDrawerContent rows="auto, *" class="nt-drawer__content">
     <StackLayout row="0" class="nt-drawer__header">
       <Image class="nt-drawer__header-image fas t-36" src="font://&#xf2bd;"></Image>
-      <Label class="nt-drawer__header-brand" text="User Name"></Label>
-      <Label class="nt-drawer__header-footnote" text="username@mail.com"></Label>
+      <Label class="nt-drawer__header-brand" text="鋒兄"></Label>
+      <Label class="nt-drawer__header-footnote" text="AI資訊系統"></Label>
     </StackLayout>
 
     <ScrollView row="1" class="nt-drawer__body">
@@ -15,37 +15,67 @@
           (tap)="onNavItemTap('/home')"
         >
           <Label col="0" text="&#xf015;" class="nt-icon fas"></Label>
-          <Label col="1" text="Home" class="p-r-10"></Label>
+          <Label col="1" text="首頁" class="p-r-10"></Label>
         </GridLayout>
 
         <GridLayout
           columns="auto, *"
           class="nt-drawer__list-item"
-          [class.-selected]="isComponentSelected('/browse')"
-          (tap)="onNavItemTap('/browse')"
+          [class.-selected]="isComponentSelected('/gallery')"
+          (tap)="onNavItemTap('/gallery')"
         >
-          <Label col="0" text="&#xf1ea;" class="nt-icon far"></Label>
-          <Label col="1" text="Browse" class="p-r-10"></Label>
+          <Label col="0" text="&#xf03e;" class="nt-icon far"></Label>
+          <Label col="1" text="圖片庫" class="p-r-10"></Label>
         </GridLayout>
 
         <GridLayout
           columns="auto, *"
           class="nt-drawer__list-item"
-          [class.-selected]="isComponentSelected('/search')"
-          (tap)="onNavItemTap('/search')"
+          [class.-selected]="isComponentSelected('/videos')"
+          (tap)="onNavItemTap('/videos')"
         >
-          <Label col="0" text="&#xf002;" class="nt-icon fas"></Label>
-          <Label col="1" text="Search" class="p-r-10"></Label>
+          <Label col="0" text="&#xf008;" class="nt-icon fas"></Label>
+          <Label col="1" text="影片庫" class="p-r-10"></Label>
         </GridLayout>
 
         <GridLayout
           columns="auto, *"
           class="nt-drawer__list-item"
-          [class.-selected]="isComponentSelected('/featured')"
-          (tap)="onNavItemTap('/featured')"
+          [class.-selected]="isComponentSelected('/music')"
+          (tap)="onNavItemTap('/music')"
         >
-          <Label col="0" text="&#xf005;" class="nt-icon fas"></Label>
-          <Label col="1" text="Featured" class="p-r-10"></Label>
+          <Label col="0" text="&#xf001;" class="nt-icon fas"></Label>
+          <Label col="1" text="鋒兄音樂歌詞" class="p-r-10"></Label>
+        </GridLayout>
+
+        <GridLayout
+          columns="auto, *"
+          class="nt-drawer__list-item"
+          [class.-selected]="isComponentSelected('/bank')"
+          (tap)="onNavItemTap('/bank')"
+        >
+          <Label col="0" text="&#xf19c;" class="nt-icon fas"></Label>
+          <Label col="1" text="銀行速記" class="p-r-10"></Label>
+        </GridLayout>
+
+        <GridLayout
+          columns="auto, *"
+          class="nt-drawer__list-item"
+          [class.-selected]="isComponentSelected('/subscriptions')"
+          (tap)="onNavItemTap('/subscriptions')"
+        >
+          <Label col="0" text="&#xf022;" class="nt-icon fas"></Label>
+          <Label col="1" text="訂閱管理" class="p-r-10"></Label>
+        </GridLayout>
+
+        <GridLayout
+          columns="auto, *"
+          class="nt-drawer__list-item"
+          [class.-selected]="isComponentSelected('/food')"
+          (tap)="onNavItemTap('/food')"
+        >
+          <Label col="0" text="&#xf2e7;" class="nt-icon fas"></Label>
+          <Label col="1" text="食品管理" class="p-r-10"></Label>
         </GridLayout>
 
         <StackLayout class="hr"></StackLayout>
@@ -57,7 +87,7 @@
           (tap)="onNavItemTap('/settings')"
         >
           <Label col="0" text="&#xf013;" class="nt-icon fas"></Label>
-          <Label col="1" text="Settings" class="p-r-10"></Label>
+          <Label col="1" text="系統設定" class="p-r-10"></Label>
         </GridLayout>
       </StackLayout>
     </ScrollView>

@@ -1,13 +1,56 @@
 <ActionBar class="action-bar">
   <NavigationButton visibility="hidden"></NavigationButton>
   <GridLayout columns="50, *">
-    <Label class="action-bar-title" text="Settings" colSpan="2"></Label>
-
+    <Label class="action-bar-title" text="系統設定" colSpan="2"></Label>
     <Label class="fas" text="&#xf0c9;" (tap)="onDrawerButtonTap()"></Label>
   </GridLayout>
 </ActionBar>
 
-<GridLayout class="page__content">
-  <Label class="page__content-icon fas" text="&#xf013;"></Label>
-  <Label class="page__content-placeholder" text="<!-- Page content goes here -->"></Label>
+<GridLayout class="page__content bg-purple" rows="auto, *">
+    
+    <ScrollView row="1">
+        <StackLayout class="p-20">
+            <!-- Contentful Configuration Section -->
+            <Label text="Contentful 設定" class="h2 font-weight-bold text-white m-b-15"></Label>
+            <StackLayout class="card bg-purple-light p-15 m-b-20">
+                <Label text="Space ID" class="label text-white m-b-5"></Label>
+                <TextField [(ngModel)]="contentfulSpaceId" hint="Enter Space ID" class="input p-10 m-b-15 bg-white-trans"></TextField>
+                
+                <Label text="Access Token (Content Delivery API)" class="label text-white m-b-5"></Label>
+                <TextField [(ngModel)]="contentfulAccessToken" hint="Enter Access Token" class="input p-10 m-b-15 bg-white-trans" secure="true"></TextField>
+                
+                <Label text="Environment" class="label text-white m-b-5"></Label>
+                <TextField [(ngModel)]="contentfulEnvironment" hint="master" class="input p-10 m-b-20 bg-white-trans"></TextField>
+                
+                <Button text="儲存並測試連線" (tap)="onSaveContentful()" class="btn btn-primary bg-green text-black font-weight-bold"></Button>
+            </StackLayout>
+            
+            <!-- System Status Section -->
+            <Label text="系統狀態" class="h2 font-weight-bold text-white m-b-15"></Label>
+            <StackLayout class="card bg-purple-light p-15 m-b-20">
+                <GridLayout columns="*, auto" class="m-b-10">
+                    <Label text="上次同步時間" class="body text-white"></Label>
+                    <Label [text]="lastSyncTime" class="body text-white-50" col="1"></Label>
+                </GridLayout>
+                <GridLayout columns="*, auto" class="m-b-10">
+                    <Label text="應用程式版本" class="body text-white"></Label>
+                    <Label [text]="appVersion" class="body text-white-50" col="1"></Label>
+                </GridLayout>
+                 <GridLayout columns="*, auto" class="m-b-10">
+                    <Label text="目前資料筆數" class="body text-white"></Label>
+                    <Label text="42" class="body text-white-50" col="1"></Label>
+                </GridLayout>
+                
+                <Button text="立即同步" (tap)="onSyncNow()" class="btn btn-outline text-white m-t-10"></Button>
+            </StackLayout>
+            
+             <!-- Data Management Section -->
+            <Label text="資料管理" class="h2 font-weight-bold text-white m-b-15"></Label>
+            <StackLayout class="card bg-purple-light p-15 m-b-20">
+                 <Button text="清除所有快取" (tap)="onResetData()" class="btn btn-outline text-white m-b-10"></Button>
+                 <Button text="重置應用程式" class="btn btn-danger bg-red text-white"></Button>
+            </StackLayout>
+
+        </StackLayout>
+    </ScrollView>
 </GridLayout>

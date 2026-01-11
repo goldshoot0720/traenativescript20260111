@@ -1,0 +1,15 @@
+<ActionBar class="action-bar">
+  <NavigationButton visibility="hidden"></NavigationButton>
+  <GridLayout columns="50, *">
+    <Label class="action-bar-title" text="銀行速記" colSpan="2"></Label>
+    <Label class="fas" text="&#xf0c9;" (tap)="onDrawerButtonTap()"></Label>
+  </GridLayout>
+</ActionBar>
+
+<GridLayout class="page__content bg-purple">
+  <StackLayout verticalAlignment="center" horizontalAlignment="center">
+    <Label class="page__content-icon fas text-white-50" text="&#xf19c;"></Label>
+    <Label class="h2 text-white text-center" text="銀行速記"></Label>
+    <Label class="body text-white-50 text-center" text="建置中..."></Label>
+  </StackLayout>
+</GridLayout>

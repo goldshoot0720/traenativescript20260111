@@ -9,16 +9,28 @@ const routes: Routes = [
     loadChildren: () => import('~/app/home/home.module').then((m) => m.HomeModule),
   },
   {
-    path: 'browse',
-    loadChildren: () => import('~/app/browse/browse.module').then((m) => m.BrowseModule),
+    path: 'gallery',
+    loadChildren: () => import('~/app/gallery/gallery.module').then((m) => m.GalleryModule),
   },
   {
-    path: 'search',
-    loadChildren: () => import('~/app/search/search.module').then((m) => m.SearchModule),
+    path: 'videos',
+    loadChildren: () => import('~/app/videos/videos.module').then((m) => m.VideosModule),
   },
   {
-    path: 'featured',
-    loadChildren: () => import('~/app/featured/featured.module').then((m) => m.FeaturedModule),
+    path: 'music',
+    loadChildren: () => import('~/app/music/music.module').then((m) => m.MusicModule),
+  },
+  {
+    path: 'bank',
+    loadChildren: () => import('~/app/bank/bank.module').then((m) => m.BankModule),
+  },
+  {
+    path: 'subscriptions',
+    loadChildren: () => import('~/app/subscriptions/subscriptions.module').then((m) => m.SubscriptionsModule),
+  },
+  {
+    path: 'food',
+    loadChildren: () => import('~/app/food/food.module').then((m) => m.FoodModule),
   },
   {
     path: 'settings',
