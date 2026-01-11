@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core'
 import { RadSideDrawer } from 'nativescript-ui-sidedrawer'
-import { Application } from '@nativescript/core'
+import { Application, Dialogs } from '@nativescript/core'
 
 interface Subscription {
     id: string;
@@ -77,13 +77,51 @@ export class SubscriptionsComponent implements OnInit {
   
   onSync(): void {
       console.log("Syncing...");
+      // Simulate sync
+      setTimeout(() => {
+          Dialogs.alert("已同步完成！");
+      }, 1000);
   }
   
   onAdd(): void {
-      console.log("Adding...");
+      if (!this.newSubName) {
+          Dialogs.alert("請輸入名稱");
+          return;
+      }
+
+      const newId = (this.subscriptions.length + 1).toString();
+      const newItem: Subscription = {
+          id: newId,
+          name: this.newSubName,
+          price: this.newSubPrice ? parseInt(this.newSubPrice) : 0,
+          account: this.newSubAccount,
+          site: this.newSubSite,
+          nextDate: `${this.newSubDateYear}-${this.newSubDateMonth.toString().padStart(2, '0')}-${this.newSubDateDay.toString().padStart(2, '0')} 16:00`,
+          note: this.newSubNote
+      };
+
+      this.subscriptions.push(newItem);
+      
+      // Reset form
+      this.newSubName = "";
+      this.newSubPrice = "";
+      this.newSubSite = "";
+      this.newSubAccount = "";
+      this.newSubNote = "";
+      
+      console.log("Added:", newItem);
   }
 
   onDelete(item: Subscription): void {
-      console.log("Deleting...", item);
+      Dialogs.confirm({
+          title: "刪除訂閱",
+          message: `確定要刪除 ${item.name} 嗎？`,
+          okButtonText: "刪除",
+          cancelButtonText: "取消"
+      }).then(result => {
+          if (result) {
+              this.subscriptions = this.subscriptions.filter(s => s.id !== item.id);
+          }
+      });
   }
 }
