@@ -6,10 +6,10 @@
   </GridLayout>
 </ActionBar>
 
-<GridLayout class="page__content bg-purple" rows="*">
-    <TabView row="0" height="100%" selectedIndex="0" androidTabsPosition="bottom" selectedTabTextColor="#00E676" tabBackgroundColor="#6200EE" selectedTabBackgroundColor="#6200EE" tabTextColor="#ffffff">
+<GridLayout class="page__content bg-purple" rows="*" height="100%" width="100%">
+    <TabView row="0" height="100%" width="100%" selectedIndex="0" androidTabsPosition="bottom" selectedTabTextColor="#00E676" tabBackgroundColor="#6200EE" selectedTabBackgroundColor="#6200EE" tabTextColor="#ffffff">
         <TabViewItem title="訂閱清單">
-            <GridLayout rows="auto, *">
+            <GridLayout rows="auto, *" height="100%" width="100%">
                 <GridLayout row="0" columns="auto, *" class="m-15">
                     <Label text="訂閱清單" class="h2 font-weight-bold text-white"></Label>
                     <Button text="🔄 同步" (tap)="onSync()" class="btn btn-sm bg-purple-light text-white m-l-10" col="1" horizontalAlignment="left" height="30" padding="0 10" style="border-radius: 5;"></Button>
