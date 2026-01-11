@@ -38,22 +38,22 @@
                     <Label text="新增食品" class="h2 font-weight-bold text-white m-b-20"></Label>
 
                     <Label text="名稱 (Name)" class="label text-white m-b-5"></Label>
-                    <TextField [(ngModel)]="newName" class="input p-10 m-b-15 bg-white-trans"></TextField>
+                    <TextField [(ngModel)]="newName" class="input p-10 m-b-15 bg-white-trans" height="50" style="font-size: 18"></TextField>
 
                     <GridLayout columns="*, *" class="m-b-15">
                         <StackLayout col="0" class="m-r-5">
                              <Label text="數量 (Amount)" class="label text-white m-b-5"></Label>
                              <GridLayout columns="*, auto, auto">
-                                <TextField [(ngModel)]="newAmount" class="input p-10 bg-white-trans" col="0"></TextField>
+                                <TextField [(ngModel)]="newAmount" class="input p-10 bg-white-trans" col="0" height="50" style="font-size: 18"></TextField>
                                 <!-- Spinner buttons placeholder -->
-                                <Label text="▲" class="text-white p-5" col="1"></Label>
-                                <Label text="▼" class="text-white p-5" col="2"></Label>
+                                <Label text="▲" class="text-white p-10" col="1" style="font-size: 20;"></Label>
+                                <Label text="▼" class="text-white p-10" col="2" style="font-size: 20;"></Label>
                              </GridLayout>
                         </StackLayout>
                         <StackLayout col="1" class="m-l-5">
                              <Label text="價格 (Price)" class="label text-white m-b-5"></Label>
                              <GridLayout columns="*, auto">
-                                <TextField [(ngModel)]="newPrice" hint="NT$0" class="input p-10 bg-white-trans" col="0"></TextField>
+                                <TextField [(ngModel)]="newPrice" hint="NT$0" class="input p-10 bg-white-trans" col="0" height="50" style="font-size: 18"></TextField>
                                 <Label text="▼" class="text-white p-10" col="1"></Label>
                              </GridLayout>
                         </StackLayout>
@@ -61,26 +61,27 @@
 
                     <Label text="到期日 (To Date)" class="label text-white m-b-5"></Label>
                     <GridLayout columns="*,*,*" class="m-b-15">
-                        <TextField [(ngModel)]="newDateYear" hint="2026" class="input p-10 bg-white-trans m-r-5" col="0"></TextField>
-                        <TextField [(ngModel)]="newDateMonth" hint="1月" class="input p-10 bg-white-trans m-r-5" col="1"></TextField>
-                        <TextField [(ngModel)]="newDateDay" hint="11" class="input p-10 bg-white-trans" col="2"></TextField>
+                        <TextField [(ngModel)]="newDateYear" hint="2026" class="input p-10 bg-white-trans m-r-5" col="0" height="50" style="font-size: 18"></TextField>
+                        <TextField [(ngModel)]="newDateMonth" hint="1月" class="input p-10 bg-white-trans m-r-5" col="1" height="50" style="font-size: 18"></TextField>
+                        <TextField [(ngModel)]="newDateDay" hint="11" class="input p-10 bg-white-trans" col="2" height="50" style="font-size: 18"></TextField>
                     </GridLayout>
 
                     <Label text="商店 (Shop)" class="label text-white m-b-5"></Label>
-                    <TextField [(ngModel)]="newShop" class="input p-10 m-b-15 bg-white-trans"></TextField>
+                    <TextField [(ngModel)]="newShop" class="input p-10 m-b-15 bg-white-trans" height="50" style="font-size: 18"></TextField>
 
                     <Label text="圖片 (Photo)" class="label text-white m-b-5"></Label>
                     <StackLayout class="bg-purple p-10 m-b-15" height="150" (tap)="onSelectPhoto()">
-                         <Label text="選擇圖片..." class="text-white-50"></Label>
+                         <Label text="選擇圖片..." class="text-white-50" verticalAlignment="center" horizontalAlignment="center"></Label>
                     </StackLayout>
                     
                     <GridLayout columns="auto, *" class="m-b-20">
                          <Label text="Hash: " class="label text-white-50 col-0"></Label>
-                         <TextField [(ngModel)]="newHash" class="input p-5 bg-white-trans col-1" editable="false"></TextField>
+                         <TextField [(ngModel)]="newHash" class="input p-5 bg-white-trans col-1" editable="false" height="40"></TextField>
                     </GridLayout>
                     
-                    <StackLayout height="5" backgroundColor="#00E676" borderRadius="2"></StackLayout>
+                    <StackLayout height="5" backgroundColor="#00E676" borderRadius="2" class="m-b-20"></StackLayout>
 
+                    <Button text="加入清單" (tap)="onAdd()" class="btn btn-primary bg-green text-black font-weight-bold" height="50" style="font-size: 18"></Button>
                 </StackLayout>
             </ScrollView>
         </TabViewItem>

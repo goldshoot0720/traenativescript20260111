@@ -36,31 +36,31 @@
                     <Label text="新增訂閱" class="h2 font-weight-bold text-white m-b-20"></Label>
 
                     <Label text="名稱 (Name)" class="label text-white m-b-5"></Label>
-                    <TextField [(ngModel)]="newSubName" class="input p-10 m-b-15 bg-white-trans"></TextField>
+                    <TextField [(ngModel)]="newSubName" class="input p-10 m-b-15 bg-white-trans" height="50" style="font-size: 18"></TextField>
 
                     <Label text="價格 (Price)" class="label text-white m-b-5"></Label>
                     <GridLayout columns="*, auto" class="m-b-15">
-                        <TextField [(ngModel)]="newSubPrice" hint="NT$0" class="input p-10 bg-white-trans" col="0"></TextField>
+                        <TextField [(ngModel)]="newSubPrice" hint="NT$0" class="input p-10 bg-white-trans" col="0" height="50" style="font-size: 18"></TextField>
                         <Label text="▼" class="text-white p-10" col="1"></Label>
                     </GridLayout>
 
                     <Label text="下次扣款日 (Next Date)" class="label text-white m-b-5"></Label>
                     <GridLayout columns="*,*,*" class="m-b-15">
-                        <TextField [(ngModel)]="newSubDateYear" hint="2026" class="input p-10 bg-white-trans m-r-5" col="0"></TextField>
-                        <TextField [(ngModel)]="newSubDateMonth" hint="1月" class="input p-10 bg-white-trans m-r-5" col="1"></TextField>
-                        <TextField [(ngModel)]="newSubDateDay" hint="11" class="input p-10 bg-white-trans" col="2"></TextField>
+                        <TextField [(ngModel)]="newSubDateYear" hint="2026" class="input p-10 bg-white-trans m-r-5" col="0" height="50" style="font-size: 18"></TextField>
+                        <TextField [(ngModel)]="newSubDateMonth" hint="1月" class="input p-10 bg-white-trans m-r-5" col="1" height="50" style="font-size: 18"></TextField>
+                        <TextField [(ngModel)]="newSubDateDay" hint="11" class="input p-10 bg-white-trans" col="2" height="50" style="font-size: 18"></TextField>
                     </GridLayout>
 
                     <Label text="網站 (Site)" class="label text-white m-b-5"></Label>
-                    <TextField [(ngModel)]="newSubSite" class="input p-10 m-b-15 bg-white-trans"></TextField>
+                    <TextField [(ngModel)]="newSubSite" class="input p-10 m-b-15 bg-white-trans" height="50" style="font-size: 18"></TextField>
 
                     <Label text="帳號 (Account)" class="label text-white m-b-5"></Label>
-                    <TextField [(ngModel)]="newSubAccount" class="input p-10 m-b-15 bg-white-trans"></TextField>
+                    <TextField [(ngModel)]="newSubAccount" class="input p-10 m-b-15 bg-white-trans" height="50" style="font-size: 18"></TextField>
 
                     <Label text="備註 (Note)" class="label text-white m-b-5"></Label>
-                    <TextView [(ngModel)]="newSubNote" class="input p-10 m-b-20 bg-white-trans" height="100"></TextView>
+                    <TextView [(ngModel)]="newSubNote" class="input p-10 m-b-20 bg-white-trans" height="100" style="font-size: 18"></TextView>
 
-                    <Button text="加入清單" (tap)="onAdd()" class="btn btn-primary bg-green text-black font-weight-bold"></Button>
+                    <Button text="加入清單" (tap)="onAdd()" class="btn btn-primary bg-green text-black font-weight-bold" height="50" style="font-size: 18"></Button>
                     <Label text="從 Contentful 載入 24 筆訂閱" class="caption text-white-50 text-center m-t-10"></Label>
                 </StackLayout>
             </ScrollView>

@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewContainerRef } from '@angular/core'
 import { RadSideDrawer } from 'nativescript-ui-sidedrawer'
-import { Application, ApplicationSettings, Dialogs, Utils } from '@nativescript/core'
+import { Application, ApplicationSettings, Dialogs, Utils, Folder, knownFolders, path } from '@nativescript/core'
 import { ModalDialogService, ModalDialogOptions } from '@nativescript/angular'
 import { VideoModalComponent } from './video-modal.component'
 
@@ -40,22 +40,60 @@ export class VideosComponent implements OnInit {
   }
 
   loadVideos(): void {
+      this.isLoading = true;
+
+      // Load local videos dynamically from assets/videos
+      const appPath = knownFolders.currentApp().path;
+      const videosPath = path.join(appPath, 'assets/videos');
+      
+      let localItems: VideoItem[] = [];
+
+      if (Folder.exists(videosPath)) {
+          const folder = Folder.fromPath(videosPath);
+          folder.getEntities()
+              .then(entities => {
+                  localItems = entities
+                      .filter(entity => {
+                          const name = entity.name.toLowerCase();
+                          return (name.endsWith('.mp4') || name.endsWith('.mov') || name.endsWith('.avi'));
+                      })
+                      .map(entity => {
+                          return {
+                              id: entity.name,
+                              title: entity.name,
+                              url: `~/assets/videos/${entity.name}`,
+                              description: 'Local Video'
+                          };
+                      });
+                  
+                  this.processContentful(localItems);
+              })
+              .catch(err => {
+                  console.error("Error loading local videos:", err);
+                  this.processContentful([]);
+              });
+      } else {
+          console.warn("assets/videos folder not found at:", videosPath);
+          this.processContentful([]);
+      }
+  }
+
+  processContentful(localItems: VideoItem[]) {
       const spaceId = ApplicationSettings.getString("contentfulSpaceId");
       const accessToken = ApplicationSettings.getString("contentfulAccessToken");
       const environment = ApplicationSettings.getString("contentfulEnvironment", "master");
 
-      let localItems: VideoItem[] = [
-          // Add your local files here manually
-          // { id: 'l1', title: 'My Local Video', url: '~/assets/videos/myvideo.mp4' }
-      ];
+      this.items = [...localItems];
 
       if (!spaceId || !accessToken) {
-          console.log("No Contentful settings found, using default items.");
-          this.items = [...localItems, ...this.defaultItems];
+          console.log("No Contentful settings found, using local items only.");
+          this.isLoading = false;
+          if (this.items.length === 0) {
+              this.items = [...this.defaultItems];
+          }
           return;
       }
 
-      this.isLoading = true;
       // Fetch assets from Contentful and filter for videos
       const url = `https://cdn.contentful.com/spaces/${spaceId}/environments/${environment}/assets?access_token=${accessToken}`;
 
@@ -70,7 +108,7 @@ export class VideosComponent implements OnInit {
                   );
 
                   if (videoAssets.length > 0) {
-                      this.items = videoAssets.map((asset: any) => {
+                      const contentfulItems = videoAssets.map((asset: any) => {
                           return {
                               id: asset.sys.id,
                               title: asset.fields.title,
@@ -78,32 +116,40 @@ export class VideosComponent implements OnInit {
                               description: asset.fields.description || ''
                           };
                       });
+                      this.items = [...localItems, ...contentfulItems];
                   } else {
-                      this.items = [];
+                      // Keep local items
+                      if (this.items.length === 0) {
+                           Dialogs.alert({
+                              title: "無影片",
+                              message: "Contentful 中找不到任何影片資產 (MIME type starting with 'video/')。",
+                              okButtonText: "了解"
+                          });
+                      }
+                  }
+              } else {
+                  // Keep local items
+                  if (this.items.length === 0) { 
                       Dialogs.alert({
-                          title: "無影片",
-                          message: "Contentful 中找不到任何影片資產 (MIME type starting with 'video/')。",
+                          title: "無資產",
+                          message: "Contentful 中找不到任何資產。",
                           okButtonText: "了解"
                       });
                   }
-              } else {
-                  this.items = []; 
-                  Dialogs.alert({
-                      title: "無資產",
-                      message: "Contentful 中找不到任何資產。",
-                      okButtonText: "了解"
-                  });
               }
           })
           .catch(error => {
               this.isLoading = false;
               console.error("Contentful Fetch Error:", error);
-              Dialogs.alert({
-                  title: "載入失敗 (Load Failed)",
-                  message: "無法從 Contentful 載入影片。\nError: " + error.message,
-                  okButtonText: "OK"
-              });
-              this.items = [...this.defaultItems];
+              // Keep local items
+              if (this.items.length === 0) {
+                  this.items = [...this.defaultItems];
+                  Dialogs.alert({
+                      title: "載入失敗 (Load Failed)",
+                      message: "無法從 Contentful 載入影片。\nError: " + error.message,
+                      okButtonText: "OK"
+                  });
+              }
           });
   }
 

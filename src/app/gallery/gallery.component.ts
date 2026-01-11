@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core'
 import { RadSideDrawer } from 'nativescript-ui-sidedrawer'
-import { Application, ApplicationSettings, Dialogs } from '@nativescript/core'
+import { Application, ApplicationSettings, Dialogs, Folder, knownFolders, path, File } from '@nativescript/core'
 
 interface GalleryItem {
   id: string;
@@ -37,24 +37,60 @@ export class GalleryComponent implements OnInit {
   }
 
   loadImages(): void {
+      this.isLoading = true;
+      
+      // Load local images dynamically from assets/images
+      const appPath = knownFolders.currentApp().path;
+      const imagesPath = path.join(appPath, 'assets/images');
+      
+      let localItems: GalleryItem[] = [];
+
+      if (Folder.exists(imagesPath)) {
+          const folder = Folder.fromPath(imagesPath);
+          folder.getEntities()
+              .then(entities => {
+                  localItems = entities
+                      .filter(entity => {
+                          const name = entity.name.toLowerCase();
+                          return (name.endsWith('.png') || name.endsWith('.jpg') || name.endsWith('.jpeg'));
+                      })
+                      .map(entity => {
+                          return {
+                              id: entity.name,
+                              title: entity.name,
+                              url: `~/assets/images/${entity.name}`,
+                              description: 'Local Image'
+                          };
+                      });
+                  
+                  this.processContentful(localItems);
+              })
+              .catch(err => {
+                  console.error("Error loading local images:", err);
+                  this.processContentful([]);
+              });
+      } else {
+          console.warn("assets/images folder not found at:", imagesPath);
+          this.processContentful([]);
+      }
+  }
+
+  processContentful(localItems: GalleryItem[]) {
       const spaceId = ApplicationSettings.getString("contentfulSpaceId");
       const accessToken = ApplicationSettings.getString("contentfulAccessToken");
       const environment = ApplicationSettings.getString("contentfulEnvironment", "master");
-      
-      // Always start with default/local items if you want them mixed in, 
-      // or only use them as fallback. Here we use them as fallback or if specifically added.
-      let localItems: GalleryItem[] = [
-          // Add your local files here manually
-          // { id: 'l1', title: 'My Local Pic', url: '~/assets/images/mypic.jpg' }
-      ];
+
+      this.items = [...localItems];
 
       if (!spaceId || !accessToken) {
-          console.log("No Contentful settings found, using default items.");
-          this.items = [...localItems, ...this.defaultItems];
+          console.log("No Contentful settings found, using local items only.");
+          this.isLoading = false;
+          if (this.items.length === 0) {
+              this.items = [...this.defaultItems];
+          }
           return;
       }
 
-      this.isLoading = true;
       // Fetch assets (images) from Contentful
       const url = `https://cdn.contentful.com/spaces/${spaceId}/environments/${environment}/assets?access_token=${accessToken}`;
 
@@ -69,7 +105,7 @@ export class GalleryComponent implements OnInit {
                   );
 
                   if (imageAssets.length > 0) {
-                      this.items = imageAssets.map((asset: any) => {
+                      const contentfulItems = imageAssets.map((asset: any) => {
                           return {
                               id: asset.sys.id,
                               title: asset.fields.title,
@@ -77,33 +113,40 @@ export class GalleryComponent implements OnInit {
                               description: asset.fields.description || ''
                           };
                       });
+                      this.items = [...localItems, ...contentfulItems];
                   } else {
-                      this.items = [];
+                      // Keep local items
+                      if (this.items.length === 0) {
+                           Dialogs.alert({
+                              title: "無圖片",
+                              message: "Contentful 中找不到任何圖片資產 (MIME type starting with 'image/')。",
+                              okButtonText: "了解"
+                          });
+                      }
+                  }
+              } else {
+                  // Keep local items
+                  if (this.items.length === 0) {
                       Dialogs.alert({
                           title: "無圖片",
-                          message: "Contentful 中找不到任何圖片資產 (MIME type starting with 'image/')。",
+                          message: "Contentful 中找不到任何圖片資產 (Assets)。",
                           okButtonText: "了解"
                       });
                   }
-              } else {
-                  // No assets found in Contentful
-                  this.items = []; 
-                  Dialogs.alert({
-                      title: "無圖片",
-                      message: "Contentful 中找不到任何圖片資產 (Assets)。",
-                      okButtonText: "了解"
-                  });
               }
           })
           .catch(error => {
               this.isLoading = false;
               console.error("Contentful Fetch Error:", error);
-              Dialogs.alert({
-                  title: "載入失敗 (Load Failed)",
-                  message: "無法從 Contentful 載入圖片。請檢查網路或設定。\nFailed to load from Contentful.\n" + error.message,
-                  okButtonText: "OK"
-              });
-              this.items = [...this.defaultItems];
+              // Keep local items
+              if (this.items.length === 0) {
+                  this.items = [...this.defaultItems];
+                  Dialogs.alert({
+                      title: "載入失敗 (Load Failed)",
+                      message: "無法從 Contentful 載入圖片。請檢查網路或設定。\nFailed to load from Contentful.\n" + error.message,
+                      okButtonText: "OK"
+                  });
+              }
           });
   }
 

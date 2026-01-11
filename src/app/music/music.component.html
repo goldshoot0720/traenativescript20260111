@@ -32,7 +32,7 @@
                        <Label [text]="track.artist" class="body text-white-50" textWrap="true"></Label>
                        <Label text="點擊查看歌詞" class="caption text-white-50 m-t-5" *ngIf="!track.isLyricsVisible"></Label>
                    </StackLayout>
-                   <Label col="1" class="fas text-white h1 m-l-10" text="&#xf144;" (tap)="onPlay(track)"></Label>
+                   <Label col="1" class="fas text-white h1 m-l-10" [text]="track.isPlaying ? '&#xf28b;' : '&#xf144;'" (tap)="onPlay(track)"></Label>
               </GridLayout>
               
               <!-- Lyrics Section -->
@@ -40,11 +40,6 @@
                   <Label text="歌詞" class="label font-weight-bold text-white m-b-5"></Label>
                   <Label [text]="track.lyrics" class="body text-white" textWrap="true" style="line-height: 1.5;"></Label>
               </StackLayout>
-
-              <GridLayout columns="*, *" class="m-t-10">
-                  <Button col="0" text="View Lyrics" (tap)="onToggleLyrics(track)" class="btn btn-outline text-white m-r-5" style="font-weight: normal;" height="50"></Button>
-                  <Button col="1" text="Play Music" (tap)="onPlay(track)" class="btn btn-primary bg-green text-black m-l-5" style="font-weight: normal;" height="50"></Button>
-              </GridLayout>
           </StackLayout>
           
       </StackLayout>
