@@ -23,6 +23,7 @@
     "@nativescript/core": "~9.0.0",
     "@nativescript/theme": "^3.1.0",
     "nativescript-ui-sidedrawer": "~15.2.0",
+    "nativescript-videoplayer": "^5.0.1",
     "rxjs": "~7.8.0",
     "zone.js": "~0.14.0"
   },

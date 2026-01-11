@@ -1,15 +1,31 @@
 <ActionBar class="action-bar">
   <NavigationButton visibility="hidden"></NavigationButton>
-  <GridLayout columns="50, *">
+  <GridLayout columns="50, *, auto">
     <Label class="action-bar-title" text="圖片庫" colSpan="2"></Label>
+    <Label col="2" class="fas p-r-15" text="&#xf021;" (tap)="onRefresh()"></Label>
     <Label class="fas" text="&#xf0c9;" (tap)="onDrawerButtonTap()"></Label>
   </GridLayout>
 </ActionBar>
 
-<GridLayout class="page__content bg-purple">
-  <StackLayout verticalAlignment="center" horizontalAlignment="center">
-    <Label class="page__content-icon far text-white-50" text="&#xf03e;"></Label>
-    <Label class="h2 text-white text-center" text="圖片庫"></Label>
-    <Label class="body text-white-50 text-center" text="建置中..."></Label>
-  </StackLayout>
+<GridLayout class="page__content bg-purple" rows="auto, *">
+  
+  <!-- Loading Indicator -->
+  <ActivityIndicator row="1" [busy]="isLoading" class="m-20" color="white"></ActivityIndicator>
+
+  <ScrollView row="1" *ngIf="!isLoading">
+      <StackLayout class="p-10">
+          
+          <!-- No Items Message -->
+          <Label *ngIf="items.length === 0" text="尚無圖片，請至 Contentful 上傳 Assets。" class="body text-white text-center m-t-20" textWrap="true"></Label>
+
+          <!-- Image Grid -->
+          <WrapLayout>
+              <StackLayout *ngFor="let item of items" width="48%" class="card bg-purple-light m-1 p-5" height="200">
+                  <Image [src]="item.url" stretch="aspectFill" height="140" class="m-b-5" loadMode="async"></Image>
+                  <Label [text]="item.title" class="text-white text-center m-t-5" textWrap="true"></Label>
+              </StackLayout>
+          </WrapLayout>
+          
+      </StackLayout>
+  </ScrollView>
 </GridLayout>

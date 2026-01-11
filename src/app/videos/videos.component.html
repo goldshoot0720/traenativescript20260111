@@ -1,15 +1,34 @@
 <ActionBar class="action-bar">
   <NavigationButton visibility="hidden"></NavigationButton>
-  <GridLayout columns="50, *">
+  <GridLayout columns="50, *, auto">
     <Label class="action-bar-title" text="影片庫" colSpan="2"></Label>
+    <Label col="2" class="fas p-r-15" text="&#xf021;" (tap)="onRefresh()"></Label>
     <Label class="fas" text="&#xf0c9;" (tap)="onDrawerButtonTap()"></Label>
   </GridLayout>
 </ActionBar>
 
-<GridLayout class="page__content bg-purple">
-  <StackLayout verticalAlignment="center" horizontalAlignment="center">
-    <Label class="page__content-icon far text-white-50" text="&#xf03d;"></Label>
-    <Label class="h2 text-white text-center" text="影片庫"></Label>
-    <Label class="body text-white-50 text-center" text="建置中..."></Label>
-  </StackLayout>
+<GridLayout class="page__content bg-purple" rows="auto, *">
+    <!-- Loading Indicator -->
+    <ActivityIndicator row="1" [busy]="isLoading" class="m-20" color="white"></ActivityIndicator>
+
+    <ScrollView row="1" *ngIf="!isLoading">
+      <StackLayout class="p-10">
+          
+          <!-- No Items Message -->
+          <Label *ngIf="items.length === 0" text="尚無影片，請至 Contentful 上傳 Video Assets。" class="body text-white text-center m-t-20" textWrap="true"></Label>
+
+          <!-- Video List -->
+          <StackLayout *ngFor="let item of items" class="card bg-purple-light m-b-15 p-15">
+              <GridLayout columns="*, auto">
+                   <StackLayout col="0">
+                       <Label [text]="item.title" class="h3 text-white m-b-5" textWrap="true"></Label>
+                       <Label [text]="item.description" class="body text-white-50" textWrap="true" *ngIf="item.description"></Label>
+                   </StackLayout>
+                   <Label col="1" class="fas text-white h1 m-l-10" text="&#xf144;" (tap)="onPlay(item)" padding="10"></Label>
+              </GridLayout>
+              <Button text="Play Video" (tap)="onPlay(item)" class="btn btn-outline text-white m-t-10" style="font-weight: normal;" height="50"></Button>
+          </StackLayout>
+          
+      </StackLayout>
+  </ScrollView>
 </GridLayout>

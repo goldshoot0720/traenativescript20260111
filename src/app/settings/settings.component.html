@@ -19,10 +19,13 @@
                 <Label text="Access Token (Content Delivery API)" class="label text-white m-b-5"></Label>
                 <TextField [(ngModel)]="contentfulAccessToken" hint="Enter Access Token" class="input p-10 m-b-15 bg-white-trans" secure="true"></TextField>
                 
-                <Label text="Environment" class="label text-white m-b-5"></Label>
-                <TextField [(ngModel)]="contentfulEnvironment" hint="master" class="input p-10 m-b-20 bg-white-trans"></TextField>
-                
-                <Button text="儲存並測試連線" (tap)="onSaveContentful()" class="btn btn-primary bg-green text-black font-weight-bold"></Button>
+                <Label text="Management Token (CMA - 用於寫入)" class="label text-white m-b-5"></Label>
+                <TextField [(ngModel)]="contentfulManagementToken" hint="Enter Management Token" class="input p-10 m-b-15 bg-white-trans" secure="true"></TextField>
+
+                <GridLayout columns="*, auto" class="m-t-10">
+                    <Button col="0" text="儲存設定" (tap)="onSaveContentful()" class="btn btn-primary bg-red text-white font-weight-bold m-r-10" height="50"></Button>
+                    <Button col="1" text="測試 Token 權限" (tap)="onTestToken()" class="btn btn-outline bg-white text-black font-weight-bold" height="50"></Button>
+                </GridLayout>
             </StackLayout>
             
             <!-- System Status Section -->
@@ -41,14 +44,14 @@
                     <Label text="42" class="body text-white-50" col="1"></Label>
                 </GridLayout>
                 
-                <Button text="立即同步" (tap)="onSyncNow()" class="btn btn-outline text-white m-t-10"></Button>
+                <Button text="立即同步" (tap)="onSyncNow()" class="btn btn-outline text-white m-t-10" height="50"></Button>
             </StackLayout>
             
              <!-- Data Management Section -->
             <Label text="資料管理" class="h2 font-weight-bold text-white m-b-15"></Label>
             <StackLayout class="card bg-purple-light p-15 m-b-20">
-                 <Button text="清除所有快取" (tap)="onResetData()" class="btn btn-outline text-white m-b-10"></Button>
-                 <Button text="重置應用程式" class="btn btn-danger bg-red text-white"></Button>
+                 <Button text="清除所有快取" (tap)="onResetData()" class="btn btn-outline text-white m-b-10" height="50"></Button>
+                 <Button text="重置應用程式" class="btn btn-danger bg-red text-white" height="50"></Button>
             </StackLayout>
 
         </StackLayout>

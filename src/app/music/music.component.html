@@ -1,15 +1,52 @@
 <ActionBar class="action-bar">
   <NavigationButton visibility="hidden"></NavigationButton>
-  <GridLayout columns="50, *">
+  <GridLayout columns="50, *, auto">
     <Label class="action-bar-title" text="鋒兄音樂歌詞" colSpan="2"></Label>
+    <Label col="2" class="fas p-r-15" text="&#xf021;" (tap)="onRefresh()"></Label>
     <Label class="fas" text="&#xf0c9;" (tap)="onDrawerButtonTap()"></Label>
   </GridLayout>
 </ActionBar>
 
-<GridLayout class="page__content bg-purple">
-  <StackLayout verticalAlignment="center" horizontalAlignment="center">
-    <Label class="page__content-icon fas text-white-50" text="&#xf001;"></Label>
-    <Label class="h2 text-white text-center" text="鋒兄音樂歌詞"></Label>
-    <Label class="body text-white-50 text-center" text="建置中..."></Label>
-  </StackLayout>
+<GridLayout class="page__content bg-purple" rows="auto, *">
+  <!-- Loading Indicator -->
+  <ActivityIndicator row="1" [busy]="isLoading" class="m-20" color="white"></ActivityIndicator>
+
+  <ScrollView row="1" *ngIf="!isLoading">
+      <StackLayout class="p-10">
+          
+          <!-- Instructions if empty -->
+          <StackLayout *ngIf="tracks.length === 0" class="m-20 text-center">
+              <Label text="尚無音樂資料" class="h2 text-white m-b-10"></Label>
+              <Label text="請至 Contentful 建立 Content Type 'music'，並新增以下欄位：" class="body text-white m-b-5" textWrap="true"></Label>
+              <Label text="1. title (Text)" class="caption text-white-50"></Label>
+              <Label text="2. artist (Text)" class="caption text-white-50"></Label>
+              <Label text="3. lyrics (Long Text)" class="caption text-white-50"></Label>
+              <Label text="4. audio (Media)" class="caption text-white-50"></Label>
+          </StackLayout>
+
+          <!-- Music List -->
+          <StackLayout *ngFor="let track of tracks" class="card bg-purple-light m-b-15 p-15">
+              <GridLayout columns="*, auto">
+                   <StackLayout col="0" (tap)="onToggleLyrics(track)">
+                       <Label [text]="track.title" class="h3 text-white m-b-5" textWrap="true"></Label>
+                       <Label [text]="track.artist" class="body text-white-50" textWrap="true"></Label>
+                       <Label text="點擊查看歌詞" class="caption text-white-50 m-t-5" *ngIf="!track.isLyricsVisible"></Label>
+                   </StackLayout>
+                   <Label col="1" class="fas text-white h1 m-l-10" text="&#xf144;" (tap)="onPlay(track)"></Label>
+              </GridLayout>
+              
+              <!-- Lyrics Section -->
+              <StackLayout *ngIf="track.isLyricsVisible" class="m-t-15 p-10 bg-white-trans border-radius-sm">
+                  <Label text="歌詞" class="label font-weight-bold text-white m-b-5"></Label>
+                  <Label [text]="track.lyrics" class="body text-white" textWrap="true" style="line-height: 1.5;"></Label>
+              </StackLayout>
+
+              <GridLayout columns="*, *" class="m-t-10">
+                  <Button col="0" text="View Lyrics" (tap)="onToggleLyrics(track)" class="btn btn-outline text-white m-r-5" style="font-weight: normal;" height="50"></Button>
+                  <Button col="1" text="Play Music" (tap)="onPlay(track)" class="btn btn-primary bg-green text-black m-l-5" style="font-weight: normal;" height="50"></Button>
+              </GridLayout>
+          </StackLayout>
+          
+      </StackLayout>
+  </ScrollView>
 </GridLayout>

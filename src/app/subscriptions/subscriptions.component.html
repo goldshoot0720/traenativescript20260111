@@ -6,59 +6,64 @@
   </GridLayout>
 </ActionBar>
 
-<GridLayout columns="*, *" class="page__content bg-purple" rows="*">
-    <!-- Left Column: Subscription List -->
-    <StackLayout col="0" class="p-20">
-        <GridLayout columns="auto, *" class="m-b-20">
-            <Label text="訂閱清單" class="h2 font-weight-bold text-white"></Label>
-            <Button text="🔄 同步" (tap)="onSync()" class="btn btn-sm bg-purple-light text-white m-l-10" col="1" horizontalAlignment="left" height="30" padding="0 10"></Button>
-        </GridLayout>
-
-        <ScrollView>
-            <StackLayout>
-                <GridLayout *ngFor="let item of subscriptions" rows="auto, auto, auto, auto" columns="*, auto" class="card bg-purple-light p-15 m-b-10">
-                    <Label [text]="item.name" class="h3 font-weight-bold text-white" col="0" row="0"></Label>
-                    <Label text="&#xf2ed;" class="fas text-white-50" col="1" row="0" (tap)="onDelete(item)" horizontalAlignment="right"></Label>
-                    
-                    <Label [text]="'價格: $' + item.price + ' | 帳號: ' + item.account" class="body text-white-50" col="0" row="1" colSpan="2"></Label>
-                    <Label [text]="item.site" class="caption text-blue" col="0" row="2" colSpan="2"></Label>
-                    <Label [text]="'下次扣款: ' + item.nextDate" class="caption text-white-50" col="0" row="3" colSpan="2"></Label>
+<GridLayout class="page__content bg-purple" rows="*">
+    <TabView androidTabsPosition="bottom" selectedTabTextColor="#00E676" tabBackgroundColor="#6200EE" selectedTabBackgroundColor="#6200EE" tabTextColor="#ffffff">
+        <TabViewItem title="訂閱清單">
+            <GridLayout rows="auto, *">
+                <GridLayout row="0" columns="auto, *" class="m-15">
+                    <Label text="訂閱清單" class="h2 font-weight-bold text-white"></Label>
+                    <Button text="🔄 同步" (tap)="onSync()" class="btn btn-sm bg-purple-light text-white m-l-10" col="1" horizontalAlignment="left" height="30" padding="0 10"></Button>
                 </GridLayout>
-            </StackLayout>
-        </ScrollView>
-    </StackLayout>
 
-    <!-- Right Column: Add Subscription Form -->
-    <StackLayout col="1" class="p-20 bg-purple-light m-20 card">
-        <Label text="新增訂閱" class="h2 font-weight-bold text-white m-b-20"></Label>
+                <ScrollView row="1">
+                    <StackLayout class="p-10">
+                        <GridLayout *ngFor="let item of subscriptions" rows="auto, auto, auto, auto" columns="*, auto" class="card bg-purple-light p-15 m-b-10">
+                            <Label [text]="item.name" class="h3 font-weight-bold text-white" col="0" row="0"></Label>
+                            <Label text="&#xf2ed;" class="fas text-white-50" col="1" row="0" (tap)="onDelete(item)" horizontalAlignment="right"></Label>
+                            
+                            <Label [text]="'價格: $' + item.price + ' | 帳號: ' + item.account" class="body text-white-50" col="0" row="1" colSpan="2"></Label>
+                            <Label [text]="item.site" class="caption text-blue" col="0" row="2" colSpan="2"></Label>
+                            <Label [text]="'下次扣款: ' + item.nextDate" class="caption text-white-50" col="0" row="3" colSpan="2"></Label>
+                        </GridLayout>
+                    </StackLayout>
+                </ScrollView>
+            </GridLayout>
+        </TabViewItem>
 
-        <Label text="名稱 (Name)" class="label text-white m-b-5"></Label>
-        <TextField [(ngModel)]="newSubName" class="input p-10 m-b-15 bg-white-trans"></TextField>
+        <TabViewItem title="新增訂閱">
+            <ScrollView>
+                <StackLayout class="p-20 bg-purple-light m-10 card">
+                    <Label text="新增訂閱" class="h2 font-weight-bold text-white m-b-20"></Label>
 
-        <Label text="價格 (Price)" class="label text-white m-b-5"></Label>
-        <GridLayout columns="*, auto" class="m-b-15">
-             <TextField [(ngModel)]="newSubPrice" hint="NT$0" class="input p-10 bg-white-trans" col="0"></TextField>
-             <!-- Placeholder for currency dropdown arrow -->
-             <Label text="▼" class="text-white p-10" col="1"></Label>
-        </GridLayout>
+                    <Label text="名稱 (Name)" class="label text-white m-b-5"></Label>
+                    <TextField [(ngModel)]="newSubName" class="input p-10 m-b-15 bg-white-trans"></TextField>
 
-        <Label text="下次扣款日 (Next Date)" class="label text-white m-b-5"></Label>
-        <GridLayout columns="*,*,*" class="m-b-15">
-            <TextField [(ngModel)]="newSubDateYear" hint="2026" class="input p-10 bg-white-trans m-r-5" col="0"></TextField>
-            <TextField [(ngModel)]="newSubDateMonth" hint="1月" class="input p-10 bg-white-trans m-r-5" col="1"></TextField>
-            <TextField [(ngModel)]="newSubDateDay" hint="11" class="input p-10 bg-white-trans" col="2"></TextField>
-        </GridLayout>
+                    <Label text="價格 (Price)" class="label text-white m-b-5"></Label>
+                    <GridLayout columns="*, auto" class="m-b-15">
+                        <TextField [(ngModel)]="newSubPrice" hint="NT$0" class="input p-10 bg-white-trans" col="0"></TextField>
+                        <Label text="▼" class="text-white p-10" col="1"></Label>
+                    </GridLayout>
 
-        <Label text="網站 (Site)" class="label text-white m-b-5"></Label>
-        <TextField [(ngModel)]="newSubSite" class="input p-10 m-b-15 bg-white-trans"></TextField>
+                    <Label text="下次扣款日 (Next Date)" class="label text-white m-b-5"></Label>
+                    <GridLayout columns="*,*,*" class="m-b-15">
+                        <TextField [(ngModel)]="newSubDateYear" hint="2026" class="input p-10 bg-white-trans m-r-5" col="0"></TextField>
+                        <TextField [(ngModel)]="newSubDateMonth" hint="1月" class="input p-10 bg-white-trans m-r-5" col="1"></TextField>
+                        <TextField [(ngModel)]="newSubDateDay" hint="11" class="input p-10 bg-white-trans" col="2"></TextField>
+                    </GridLayout>
 
-        <Label text="帳號 (Account)" class="label text-white m-b-5"></Label>
-        <TextField [(ngModel)]="newSubAccount" class="input p-10 m-b-15 bg-white-trans"></TextField>
+                    <Label text="網站 (Site)" class="label text-white m-b-5"></Label>
+                    <TextField [(ngModel)]="newSubSite" class="input p-10 m-b-15 bg-white-trans"></TextField>
 
-        <Label text="備註 (Note)" class="label text-white m-b-5"></Label>
-        <TextView [(ngModel)]="newSubNote" class="input p-10 m-b-20 bg-white-trans" height="100"></TextView>
+                    <Label text="帳號 (Account)" class="label text-white m-b-5"></Label>
+                    <TextField [(ngModel)]="newSubAccount" class="input p-10 m-b-15 bg-white-trans"></TextField>
 
-        <Button text="加入清單" (tap)="onAdd()" class="btn btn-primary bg-green text-black font-weight-bold"></Button>
-        <Label text="從 Contentful 載入 24 筆訂閱" class="caption text-white-50 text-center m-t-10"></Label>
-    </StackLayout>
+                    <Label text="備註 (Note)" class="label text-white m-b-5"></Label>
+                    <TextView [(ngModel)]="newSubNote" class="input p-10 m-b-20 bg-white-trans" height="100"></TextView>
+
+                    <Button text="加入清單" (tap)="onAdd()" class="btn btn-primary bg-green text-black font-weight-bold"></Button>
+                    <Label text="從 Contentful 載入 24 筆訂閱" class="caption text-white-50 text-center m-t-10"></Label>
+                </StackLayout>
+            </ScrollView>
+        </TabViewItem>
+    </TabView>
 </GridLayout>

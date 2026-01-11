@@ -6,10 +6,37 @@
   </GridLayout>
 </ActionBar>
 
-<GridLayout class="page__content bg-purple">
-  <StackLayout verticalAlignment="center" horizontalAlignment="center">
-    <Label class="page__content-icon fas text-white-50" text="&#xf19c;"></Label>
-    <Label class="h2 text-white text-center" text="銀行速記"></Label>
-    <Label class="body text-white-50 text-center" text="建置中..."></Label>
-  </StackLayout>
+<GridLayout class="page__content bg-purple" rows="auto, *, auto">
+  
+  <!-- Header -->
+  <Label row="0" text="銀行速記 Bank Quick Notes" class="h2 text-white font-weight-bold m-15"></Label>
+
+  <!-- Bank List -->
+  <ScrollView row="1">
+    <StackLayout class="p-15">
+        <GridLayout *ngFor="let item of items" columns="*, 100" class="bg-purple-light card p-15 m-b-10" rows="auto">
+            <Label [text]="item.name" class="h3 text-white" verticalAlignment="center"></Label>
+            <TextField col="1" [(ngModel)]="item.balance" keyboardType="number" class="text-right text-black bg-white-trans p-5" style="color: black; background-color: rgba(255,255,255,0.8); border-radius: 5;"></TextField>
+        </GridLayout>
+    </StackLayout>
+  </ScrollView>
+
+  <!-- Bottom Bar -->
+  <GridLayout row="2" columns="*, auto" class="p-20" style="background-color: #4a00b0;">
+      <!-- Left: Title and Status -->
+      <StackLayout col="0" verticalAlignment="center">
+          <Label text="小計 (Subtotal)" class="h3 text-white font-weight-bold"></Label>
+          <Label [text]="statusText" class="body text-white-50 m-t-5"></Label>
+      </StackLayout>
+
+      <!-- Right: Amount and Buttons -->
+      <StackLayout col="1" horizontalAlignment="right">
+          <Label [text]="'NT$' + (totalAmount | number)" class="h2 text-yellow font-weight-bold text-right m-b-10" style="color: #FFD700;"></Label>
+          <StackLayout orientation="horizontal">
+              <Button text="讀取 (Load)" (tap)="onLoad()" class="btn btn-sm m-r-10" style="background-color: #FF5722; color: white; border-radius: 5; height: 50;"></Button>
+              <Button text="儲存 (Save)" (tap)="onSave()" class="btn btn-sm" style="background-color: #9C27B0; color: white; border-radius: 5; height: 50;"></Button>
+          </StackLayout>
+      </StackLayout>
+  </GridLayout>
+
 </GridLayout>

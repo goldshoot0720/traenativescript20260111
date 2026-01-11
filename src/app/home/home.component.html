@@ -16,17 +16,17 @@
       <Label text="鋒兄涂哥公開資訊© 版權所有 2025 ~ 2125" class="caption text-white-50"></Label>
     </StackLayout>
 
-    <GridLayout columns="*, *" rows="auto, auto">
+    <StackLayout>
         <!-- Frontend Tech -->
-        <StackLayout col="0" row="0" class="card p-15 m-r-5 m-b-10 bg-purple-light">
+        <StackLayout class="card p-15 m-b-10 bg-purple-light">
              <Label text="⚡ 前端技術" class="h3 font-weight-bold m-b-10 text-white"></Label>
-             <Label text="• Vue 3 (Vite)" class="body text-white"></Label>
-             <Label text="• 網頁存放於 Local" class="body text-white"></Label>
-             <Label text="• 響應式設計 + CSS" class="body text-white"></Label>
+             <Label text="• NativeScript + Angular" class="body text-white"></Label>
+             <Label text="• iOS / Android 雙平台" class="body text-white"></Label>
+             <Label text="• SCSS 樣式設計" class="body text-white"></Label>
         </StackLayout>
 
         <!-- Backend Tech -->
-        <StackLayout col="1" row="0" class="card p-15 m-l-5 m-b-10 bg-purple-light">
+        <StackLayout class="card p-15 m-b-10 bg-purple-light">
              <Label text="🚀 後端技術" class="h3 font-weight-bold m-b-10 text-white"></Label>
              <Label text="• Contentful (Headless CMS)" class="body text-white" textWrap="true"></Label>
              <Label text="• 資料存放於 Contentful Space" class="body text-white" textWrap="true"></Label>
@@ -34,7 +34,7 @@
         </StackLayout>
 
         <!-- Subscriptions -->
-        <StackLayout col="0" row="1" class="card p-15 m-r-5 m-b-10 bg-purple-light">
+        <StackLayout class="card p-15 m-b-10 bg-purple-light">
              <Label text="📰 訂閱管理" class="h3 font-weight-bold m-b-10 text-white"></Label>
              <GridLayout columns="*,*,*" rows="auto, auto">
                  <Label col="0" row="0" text="項目數" class="caption text-white text-center"></Label>
@@ -49,7 +49,7 @@
         </StackLayout>
 
         <!-- Food -->
-        <StackLayout col="1" row="1" class="card p-15 m-l-5 m-b-10 bg-purple-light">
+        <StackLayout class="card p-15 m-b-10 bg-purple-light">
              <Label text="🍎 食品管理" class="h3 font-weight-bold m-b-10 text-white"></Label>
              <GridLayout columns="*,*,*" rows="auto, auto">
                  <Label col="0" row="0" text="項目數" class="caption text-white text-center"></Label>
@@ -62,7 +62,7 @@
                  <Label col="2" row="1" text="0" class="h2 font-weight-bold text-white text-center"></Label>
              </GridLayout>
         </StackLayout>
-    </GridLayout>
+    </StackLayout>
 
   </StackLayout>
 </ScrollView>
