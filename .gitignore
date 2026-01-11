@@ -2,6 +2,7 @@
 hooks/
 node_modules/
 platforms/
+platforms_trash_*/
 
 # Logs
 logs
@@ -26,3 +27,12 @@ typings/
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+# Build Artifacts
+*.apk
+*.aab
+*.ap_
+
+# Secrets
+*.keystore
+*.jks
