@@ -1,70 +1,27 @@
-/* Main Container */
-.main-container {
+/* Mobile Container */
+.mobile-container {
+    background-color: #f5f5f5;
+}
+
+/* Mobile Header */
+.mobile-header {
     background-color: #6a4c93;
-}
-
-/* Sidebar Styles */
-.sidebar {
-    background-color: #5a3d7a;
-    padding: 0;
-}
-
-.app-header {
-    background-color: #8b5cf6;
-    padding: 15;
-    margin-bottom: 20;
+    padding: 15 20;
+    elevation: 4;
+    android-elevation: 4;
 }
 
 .app-icon {
-    font-size: 24;
+    font-size: 28;
     color: #ffffff;
     margin-right: 10;
 }
 
-.app-title {
-    font-size: 18;
-    font-weight: bold;
-    color: #ffffff;
-}
-
-.nav-menu {
-    padding: 10;
-}
-
-.nav-item {
-    background-color: transparent;
-    color: rgba(255, 255, 255, 0.8);
-    border-width: 0;
-    padding: 15;
-    margin-bottom: 5;
-    text-align: left;
-    font-size: 14;
-    border-radius: 8;
-}
-
-.nav-item.active {
-    background-color: rgba(255, 255, 255, 0.1);
-    color: #ffffff;
-    font-weight: bold;
-}
-
-/* Main Content Area */
-.main-content {
-    background-color: #ffffff;
-    margin: 10;
-    border-radius: 12;
-}
-
-.content-header {
-    background-color: #6a4c93;
-    padding: 20;
-    border-radius: 12;
-}
-
 .page-title {
-    font-size: 24;
+    font-size: 20;
     font-weight: bold;
     color: #ffffff;
+    text-align: center;
 }
 
 .sync-btn {
@@ -72,173 +29,241 @@
     color: #ffffff;
     border-width: 1;
     border-color: rgba(255, 255, 255, 0.3);
-    border-radius: 8;
-    padding: 10;
-    font-size: 14;
+    border-radius: 20;
+    width: 40;
+    height: 40;
+    font-size: 16;
 }
 
-/* Content Body */
-.content-body {
-    padding: 20;
+/* Tab Navigation */
+.tab-navigation {
     background-color: #ffffff;
-}
-
-/* Food List Section */
-.food-list-section {
-    margin-right: 20;
-}
-
-.tab-header {
-    margin-bottom: 20;
+    padding: 0;
+    elevation: 2;
+    android-elevation: 2;
 }
 
 .tab-btn {
     background-color: transparent;
     color: #6a4c93;
     border-width: 0;
-    padding: 10;
+    padding: 15;
     font-size: 16;
-    border-radius: 8;
-    margin-right: 10;
+    font-weight: 500;
+    border-bottom-width: 3;
+    border-bottom-color: transparent;
 }
 
 .tab-btn.active {
-    background-color: #6a4c93;
-    color: #ffffff;
+    color: #8b5cf6;
     font-weight: bold;
+    border-bottom-color: #8b5cf6;
 }
 
-.food-list-container {
-    height: 500;
+/* Content Area */
+.content-area {
+    background-color: #f5f5f5;
+    padding: 0;
 }
 
-.food-item {
-    background-color: rgba(139, 92, 246, 0.1);
-    margin-bottom: 15;
+/* Food List View */
+.food-list-view {
+    background-color: #f5f5f5;
+}
+
+.food-items-mobile {
+    padding: 15;
+}
+
+.food-item-mobile {
+    background-color: #ffffff;
+    margin-bottom: 12;
     padding: 15;
     border-radius: 12;
+    elevation: 2;
+    android-elevation: 2;
     border-width: 1;
-    border-color: rgba(139, 92, 246, 0.2);
+    border-color: rgba(139, 92, 246, 0.1);
 }
 
-.product-image {
-    width: 60;
-    height: 60;
+.product-image-mobile {
+    width: 70;
+    height: 70;
     margin-right: 15;
-    border-radius: 8;
+    border-radius: 10;
     background-color: rgba(139, 92, 246, 0.1);
 }
 
-.product-img {
-    width: 60;
-    height: 60;
-    border-radius: 8;
+.product-img-mobile {
+    width: 70;
+    height: 70;
+    border-radius: 10;
 }
 
-.placeholder-icon {
-    font-size: 24;
+.placeholder-icon-mobile {
+    font-size: 32;
     color: #8b5cf6;
     text-align: center;
     vertical-align: center;
+    margin-top: 20;
 }
 
-.product-name {
+.product-details-mobile {
+    margin-right: 10;
+}
+
+.product-name-mobile {
     font-size: 16;
     font-weight: bold;
     color: #2d1b69;
     margin-bottom: 8;
+    line-height: 1.3;
 }
 
-.meta-text {
+.product-meta-mobile {
+    margin-bottom: 6;
+}
+
+.meta-text-mobile {
     font-size: 14;
     color: #666666;
     margin-right: 15;
 }
 
-.meta-text.price {
+.meta-text-mobile.price-mobile {
     color: #8b5cf6;
     font-weight: bold;
 }
 
-.expiry-date {
+.expiry-date-mobile {
     font-size: 14;
     color: #e74c3c;
     font-weight: bold;
+    margin-bottom: 4;
 }
 
-.delete-btn {
+.shop-name-mobile {
+    font-size: 13;
+    color: #999999;
+    font-style: italic;
+}
+
+.action-btn-container-mobile {
+    width: 50;
+}
+
+.delete-btn-mobile {
     background-color: rgba(231, 76, 60, 0.1);
     color: #e74c3c;
     border-width: 1;
     border-color: rgba(231, 76, 60, 0.3);
-    border-radius: 8;
-    width: 40;
-    height: 40;
-    font-size: 16;
+    border-radius: 25;
+    width: 50;
+    height: 50;
+    font-size: 18;
 }
 
-/* Add Food Section */
-.add-food-section {
-    background-color: rgba(139, 92, 246, 0.05);
-    border-radius: 12;
+/* Empty State */
+.empty-state {
+    padding: 60 30;
+    text-align: center;
+}
+
+.empty-icon {
+    font-size: 64;
+    color: #cccccc;
+    margin-bottom: 20;
+}
+
+.empty-text {
+    font-size: 18;
+    color: #666666;
+    font-weight: bold;
+    margin-bottom: 10;
+}
+
+.empty-hint {
+    font-size: 14;
+    color: #999999;
+    line-height: 1.4;
+}
+
+/* Add Food Form */
+.add-food-view {
+    background-color: #f5f5f5;
+}
+
+.form-content-mobile {
     padding: 20;
 }
 
-.section-title {
-    font-size: 20;
-    font-weight: bold;
-    color: #2d1b69;
-    text-align: center;
+.form-group-mobile {
     margin-bottom: 20;
 }
 
-.form-container {
-    height: 500;
-}
-
-.form-group {
-    margin-bottom: 20;
-}
-
-.form-label {
-    font-size: 14;
+.form-label-mobile {
+    font-size: 16;
     font-weight: bold;
     color: #2d1b69;
     margin-bottom: 8;
 }
 
-.form-input {
-    background-color: rgba(255, 255, 255, 0.8);
+.form-input-mobile {
+    background-color: #ffffff;
     border-width: 1;
     border-color: rgba(139, 92, 246, 0.3);
-    border-radius: 8;
-    padding: 12;
-    font-size: 14;
+    border-radius: 10;
+    padding: 15;
+    font-size: 16;
     color: #333333;
+    elevation: 1;
+    android-elevation: 1;
 }
 
-.date-input {
+.form-input-mobile:focus {
+    border-color: #8b5cf6;
+    border-width: 2;
+}
+
+.date-inputs-mobile {
+    margin-top: 8;
+}
+
+.date-input-mobile {
     text-align: center;
-    font-size: 14;
+    font-size: 16;
+    font-weight: bold;
 }
 
-.photo-btn {
+.photo-btn-mobile {
     background-color: rgba(139, 92, 246, 0.1);
     color: #8b5cf6;
     border-width: 1;
     border-color: rgba(139, 92, 246, 0.3);
-    border-radius: 8;
-    padding: 12;
-    font-size: 14;
+    border-radius: 10;
+    padding: 15;
+    font-size: 16;
+    font-weight: 500;
 }
 
-.hash-input {
-    background-color: rgba(139, 92, 246, 0.05);
+/* Action Buttons */
+.action-buttons-mobile {
+    margin-top: 30;
+    margin-bottom: 20;
+}
+
+.clear-btn-mobile {
+    background-color: rgba(231, 76, 60, 0.1);
+    color: #e74c3c;
     border-width: 1;
-    border-color: rgba(139, 92, 246, 0.2);
+    border-color: rgba(231, 76, 60, 0.3);
+    border-radius: 25;
+    padding: 15;
+    font-size: 16;
+    font-weight: bold;
 }
 
-.add-btn {
+.add-btn-mobile {
     background-color: #00e676;
     color: #ffffff;
     border-width: 0;
@@ -246,6 +271,251 @@
     padding: 15;
     font-size: 16;
     font-weight: bold;
+    elevation: 3;
+    android-elevation: 3;
+}
+
+/* Responsive adjustments for different screen sizes */
+@media screen and (max-width: 400) {
+    .product-name-mobile {
+        font-size: 15;
+    }
+    
+    .form-input-mobile {
+        padding: 12;
+        font-size: 15;
+    }
+    
+    .food-items-mobile {
+        padding: 10;
+    }
+    
+    .form-content-mobile {
+        padding: 15;
+    }
+}
+
+/* Touch feedback */
+.food-item-mobile:active {
+    background-color: rgba(139, 92, 246, 0.05);
+}
+
+.tab-btn:active {
+    background-color: rgba(139, 92, 246, 0.1);
+}
+
+.delete-btn-mobile:active {
+    background-color: rgba(231, 76, 60, 0.2);
+}
+
+.add-btn-mobile:active {
+    background-color: #00c853;
+}
+
+.clear-btn-mobile:active {
+    background-color: rgba(231, 76, 60, 0.2);
+}
+
+/* Header Info */
+.header-info {
+    text-align: center;
+}
+
+.connection-status {
+    font-size: 12;
+    margin-top: 2;
+}
+
+.status-connected {
+    color: #00e676;
+}
+
+.status-offline {
+    color: #ff9800;
+}
+
+/* Action Buttons */
+.action-btn {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    border-width: 1;
+    border-color: rgba(255, 255, 255, 0.3);
+    border-radius: 20;
+    width: 40;
+    height: 40;
+    font-size: 16;
+    margin-right: 5;
+}
+
+.filter-btn {
+    background-color: rgba(139, 92, 246, 0.1);
+    color: #8b5cf6;
+    border-width: 1;
+    border-color: rgba(139, 92, 246, 0.3);
+    border-radius: 15;
+    padding: 8;
+    font-size: 14;
+    margin-left: 5;
+}
+
+.warning-btn {
+    background-color: rgba(255, 152, 0, 0.1);
+    color: #ff9800;
+    border-width: 1;
+    border-color: rgba(255, 152, 0, 0.3);
+    border-radius: 15;
+    padding: 8;
+    font-size: 14;
+    margin-left: 5;
+}
+
+/* Loading */
+.loading-container {
+    padding: 50;
+    text-align: center;
+}
+
+.loading-text {
+    font-size: 16;
+    color: #666666;
+    margin-bottom: 20;
+}
+
+.loading-spinner {
+    color: #8b5cf6;
+}
+
+.sync-btn.loading {
+    animation-name: spin;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
+/* Category Tag */
+.category-tag-mobile {
+    font-size: 12;
+    color: #8b5cf6;
+    background-color: rgba(139, 92, 246, 0.1);
+    border-radius: 10;
+    padding: 2 8;
+    margin-left: 10;
+    font-weight: bold;
+}
+
+/* Form Textarea */
+.form-textarea-mobile {
+    background-color: #ffffff;
+    border-width: 1;
+    border-color: rgba(139, 92, 246, 0.3);
+    border-radius: 10;
+    padding: 15;
+    font-size: 16;
+    color: #333333;
+    elevation: 1;
+    android-elevation: 1;
+    height: 80;
+}
+
+.form-textarea-mobile:focus {
+    border-color: #8b5cf6;
+    border-width: 2;
+}
+
+/* Reload Button */
+.reload-btn {
+    background-color: #8b5cf6;
+    color: #ffffff;
+    border-width: 0;
+    border-radius: 20;
+    padding: 12;
+    font-size: 14;
     margin-top: 20;
-    width: 100%;
+}
+
+/* Contentful Notice */
+.contentful-notice {
+    background-color: rgba(33, 150, 243, 0.1);
+    border-radius: 10;
+    padding: 15;
+    margin-top: 20;
+    border-left-width: 4;
+    border-left-color: #2196f3;
+}
+
+.notice-title {
+    font-size: 14;
+    font-weight: bold;
+    color: #2196f3;
+    margin-bottom: 8;
+}
+
+.notice-text {
+    font-size: 13;
+    color: #666666;
+    line-height: 1.4;
+}
+
+/* Enhanced Tab Navigation */
+.tab-navigation {
+    elevation: 2;
+    android-elevation: 2;
+}
+
+/* Animations */
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Enhanced Touch Feedback */
+.action-btn:active {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.filter-btn:active {
+    background-color: rgba(139, 92, 246, 0.2);
+}
+
+.warning-btn:active {
+    background-color: rgba(255, 152, 0, 0.2);
+}
+
+.reload-btn:active {
+    background-color: #7c4dff;
+}
+
+/* Responsive Enhancements */
+@media screen and (max-width: 400) {
+    .header-info {
+        margin-left: 5;
+        margin-right: 5;
+    }
+    
+    .connection-status {
+        font-size: 11;
+    }
+    
+    .action-btn {
+        width: 35;
+        height: 35;
+        font-size: 14;
+    }
+    
+    .filter-btn, .warning-btn {
+        padding: 6;
+        font-size: 12;
+    }
+}
+
+/* Status Indicators */
+.food-item-mobile.expiring-soon {
+    border-left-width: 4;
+    border-left-color: #ff9800;
+}
+
+.food-item-mobile.expired {
+    border-left-width: 4;
+    border-left-color: #e74c3c;
+    background-color: rgba(231, 76, 60, 0.05);
 }

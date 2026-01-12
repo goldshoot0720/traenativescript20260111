@@ -1,131 +1,155 @@
-<!-- Main Layout with Sidebar -->
-<GridLayout columns="250, *" height="100%" width="100%" class="main-container">
-    <!-- Left Sidebar -->
-    <StackLayout col="0" class="sidebar">
-        <!-- App Header -->
-        <GridLayout columns="auto, *" class="app-header">
-            <Label col="0" text="🍎" class="app-icon"></Label>
-            <Label col="1" text="鮮元AI系統" class="app-title"></Label>
+<!-- Mobile Layout -->
+<GridLayout rows="auto, auto, auto, *" height="100%" width="100%" class="mobile-container">
+    <!-- ActionBar -->
+    <ActionBar row="0" class="action-bar">
+        <NavigationButton visibility="hidden"></NavigationButton>
+        <GridLayout columns="50, *">
+            <Label class="action-bar-title" text="食品管理" colSpan="2"></Label>
+            <Label class="fas" text="&#xf0c9;" (tap)="onDrawerButtonTap()"></Label>
         </GridLayout>
-        
-        <!-- Navigation Menu -->
-        <StackLayout class="nav-menu">
-            <Button text="📊 首頁" class="nav-item"></Button>
-            <Button text="🛒 食品管理" class="nav-item active"></Button>
-            <Button text="📦 庫存管理" class="nav-item"></Button>
-            <Button text="🏪 訂行業管理" class="nav-item"></Button>
-            <Button text="📋 訂行業記錄" class="nav-item"></Button>
-            <Button text="📊 銷售管理" class="nav-item"></Button>
-            <Button text="🏪 食品管理" class="nav-item"></Button>
-            <Button text="📈 統計分析" class="nav-item"></Button>
+    </ActionBar>
+    
+    <!-- Top Header -->
+    <GridLayout row="1" columns="auto, *, auto, auto" class="mobile-header">
+        <Label col="0" text="🍎" class="app-icon"></Label>
+        <StackLayout col="1" class="header-info">
+            <Label text="食品管理" class="page-title"></Label>
+            <Label [text]="getConnectionStatus()" [class]="'connection-status ' + getConnectionStatusClass()"></Label>
         </StackLayout>
+        <Button col="2" text="🔍" (tap)="onSearch()" class="action-btn" hint="搜尋"></Button>
+        <Button col="3" text="🔄" (tap)="onSync()" class="sync-btn" [class.loading]="isLoading"></Button>
+    </GridLayout>
+    
+    <!-- Tab Navigation -->
+    <GridLayout row="2" columns="*, *, auto, auto" class="tab-navigation">
+        <Button col="0" [text]="'📋 清單 (' + foodItems.length + ')'" 
+                [class]="'tab-btn ' + (activeTab === 'list' ? 'active' : '')" 
+                (tap)="setActiveTab('list')"></Button>
+        <Button col="1" text="➕ 新增" 
+                [class]="'tab-btn ' + (activeTab === 'add' ? 'active' : '')" 
+                (tap)="setActiveTab('add')"></Button>
+        <Button col="2" text="🏷️" (tap)="onFilterByCategory()" class="filter-btn" hint="分類篩選"></Button>
+        <Button col="3" text="⚠️" (tap)="onCheckExpiring()" class="warning-btn" hint="即將到期"></Button>
+    </GridLayout>
+    
+    <!-- Loading Indicator -->
+    <StackLayout row="3" *ngIf="isLoading" class="loading-container">
+        <Label text="載入中..." class="loading-text"></Label>
+        <ActivityIndicator busy="true" class="loading-spinner"></ActivityIndicator>
     </StackLayout>
     
-    <!-- Main Content Area -->
-    <GridLayout col="1" rows="auto, *" class="main-content">
-        <!-- Top Header -->
-        <GridLayout row="0" columns="*, auto" class="content-header">
-            <Label col="0" text="食品管理" class="page-title"></Label>
-            <Button col="1" text="🔄 同步" (tap)="onSync()" class="sync-btn"></Button>
-        </GridLayout>
-        
-        <!-- Content Body -->
-        <GridLayout row="1" columns="2*, *" class="content-body">
-            <!-- Left: Food List -->
-            <StackLayout col="0" class="food-list-section">
-                <!-- Tab Header -->
-                <GridLayout columns="auto, auto" class="tab-header">
-                    <Button col="0" text="食品清單" class="tab-btn active" (tap)="setActiveTab('list')"></Button>
-                    <Button col="1" text="同步" class="tab-btn" (tap)="setActiveTab('sync')"></Button>
+    <!-- Content Area -->
+    <GridLayout row="3" *ngIf="!isLoading" class="content-area">
+        <!-- Food List View -->
+        <ScrollView *ngIf="activeTab === 'list'" class="food-list-view">
+            <StackLayout class="food-items-mobile">
+                <GridLayout *ngFor="let item of foodItems" columns="auto, *, auto" class="food-item-mobile" (tap)="onItemTap(item)">
+                    <!-- Product Image -->
+                    <StackLayout col="0" class="product-image-mobile">
+                        <Image [src]="item.image" stretch="aspectFill" *ngIf="item.image" class="product-img-mobile"></Image>
+                        <Label text="📦" class="placeholder-icon-mobile" *ngIf="!item.image"></Label>
+                    </StackLayout>
+                    
+                    <!-- Product Details -->
+                    <StackLayout col="1" class="product-details-mobile">
+                        <Label [text]="item.name" class="product-name-mobile" textWrap="true"></Label>
+                        <GridLayout columns="auto, auto, *" class="product-meta-mobile">
+                            <Label col="0" [text]="'數量: ' + item.amount" class="meta-text-mobile"></Label>
+                            <Label col="1" [text]="'NT$' + item.price" class="meta-text-mobile price-mobile" *ngIf="item.price > 0"></Label>
+                        </GridLayout>
+                        <Label [text]="'到期: ' + item.expiryDate" class="expiry-date-mobile"></Label>
+                        <GridLayout columns="auto, auto" *ngIf="item.shop || item.category">
+                            <Label col="0" [text]="item.shop" class="shop-name-mobile" *ngIf="item.shop"></Label>
+                            <Label col="1" [text]="'#' + item.category" class="category-tag-mobile" *ngIf="item.category"></Label>
+                        </GridLayout>
+                    </StackLayout>
+                    
+                    <!-- Action Button -->
+                    <StackLayout col="2" class="action-btn-container-mobile">
+                        <Button text="🗑️" (tap)="onDelete(item)" class="delete-btn-mobile"></Button>
+                    </StackLayout>
                 </GridLayout>
                 
-                <!-- Food Items List -->
-                <ScrollView class="food-list-container">
-                    <StackLayout class="food-items">
-                        <GridLayout *ngFor="let item of foodItems" columns="auto, *, auto" class="food-item">
-                            <!-- Product Image -->
-                            <StackLayout col="0" class="product-image">
-                                <Image [src]="item.image" stretch="aspectFill" *ngIf="item.image" class="product-img"></Image>
-                                <Label text="📦" class="placeholder-icon" *ngIf="!item.image"></Label>
-                            </StackLayout>
-                            
-                            <!-- Product Details -->
-                            <StackLayout col="1" class="product-details">
-                                <Label [text]="item.name" class="product-name" textWrap="true"></Label>
-                                <GridLayout columns="auto, auto" class="product-meta">
-                                    <Label col="0" [text]="'數量: ' + item.amount" class="meta-text"></Label>
-                                    <Label col="1" [text]="'價格: $' + item.price" class="meta-text price" *ngIf="item.price > 0"></Label>
-                                </GridLayout>
-                                <Label [text]="'到期日: ' + item.expiryDate" class="expiry-date"></Label>
-                            </StackLayout>
-                            
-                            <!-- Action Button -->
-                            <StackLayout col="2" class="action-btn-container">
-                                <Button text="🗑️" (tap)="onDelete(item)" class="delete-btn"></Button>
-                            </StackLayout>
-                        </GridLayout>
-                    </StackLayout>
-                </ScrollView>
+                <!-- Empty State -->
+                <StackLayout *ngIf="foodItems.length === 0" class="empty-state">
+                    <Label text="📦" class="empty-icon"></Label>
+                    <Label text="尚無食品資料" class="empty-text"></Label>
+                    <Label text="點擊上方「新增」開始添加" class="empty-hint"></Label>
+                    <Button text="重新載入" (tap)="onSync()" class="reload-btn"></Button>
+                </StackLayout>
             </StackLayout>
-            
-            <!-- Right: Add New Food Form -->
-            <StackLayout col="1" class="add-food-section">
-                <Label text="新增食品" class="section-title"></Label>
+        </ScrollView>
+        
+        <!-- Add Food Form -->
+        <ScrollView *ngIf="activeTab === 'add'" class="add-food-view">
+            <StackLayout class="form-content-mobile">
+                <!-- Name Field -->
+                <StackLayout class="form-group-mobile">
+                    <Label text="食品名稱 *" class="form-label-mobile"></Label>
+                    <TextField [(ngModel)]="newName" hint="請輸入食品名稱" class="form-input-mobile"></TextField>
+                </StackLayout>
                 
-                <ScrollView class="form-container">
-                    <StackLayout class="form-content">
-                        <!-- Name Field -->
-                        <StackLayout class="form-group">
-                            <Label text="名稱 (Name)" class="form-label"></Label>
-                            <TextField [(ngModel)]="newName" hint="" class="form-input"></TextField>
-                        </StackLayout>
-                        
-                        <!-- Amount and Price Row -->
-                        <GridLayout columns="*, 10, *" class="form-group">
-                            <StackLayout col="0">
-                                <Label text="數量 (Amount)" class="form-label"></Label>
-                                <TextField [(ngModel)]="newAmount" keyboardType="number" hint="" class="form-input"></TextField>
-                            </StackLayout>
-                            
-                            <StackLayout col="2">
-                                <Label text="價格 (Price)" class="form-label"></Label>
-                                <TextField [(ngModel)]="newPrice" keyboardType="number" hint="NT$0" class="form-input"></TextField>
-                            </StackLayout>
-                        </GridLayout>
-                        
-                        <!-- Expiry Date -->
-                        <StackLayout class="form-group">
-                            <Label text="到期日期 (To Date)" class="form-label"></Label>
-                            <GridLayout columns="*, 5, *, 5, *" class="date-inputs">
-                                <TextField col="0" [(ngModel)]="newDateYear" keyboardType="number" hint="2026" class="form-input date-input"></TextField>
-                                <TextField col="2" [(ngModel)]="newDateMonth" keyboardType="number" hint="1" class="form-input date-input"></TextField>
-                                <TextField col="4" [(ngModel)]="newDateDay" keyboardType="number" hint="12" class="form-input date-input"></TextField>
-                            </GridLayout>
-                        </StackLayout>
-                        
-                        <!-- Shop Field -->
-                        <StackLayout class="form-group">
-                            <Label text="商店 (Shop)" class="form-label"></Label>
-                            <TextField [(ngModel)]="newShop" hint="" class="form-input"></TextField>
-                        </StackLayout>
-                        
-                        <!-- Photo Field -->
-                        <StackLayout class="form-group">
-                            <Label text="圖片 (Photo)" class="form-label"></Label>
-                            <Button text="📷 選擇圖片" (tap)="onSelectPhoto()" class="photo-btn"></Button>
-                        </StackLayout>
-                        
-                        <!-- Hash Field -->
-                        <StackLayout class="form-group">
-                            <Label text="Hash" class="form-label"></Label>
-                            <TextField [(ngModel)]="newHash" hint="" class="form-input hash-input"></TextField>
-                        </StackLayout>
-                        
-                        <!-- Add Button -->
-                        <Button text="新增 食品" (tap)="onAdd()" class="add-btn"></Button>
+                <!-- Amount and Price Row -->
+                <GridLayout columns="*, 15, *" class="form-group-mobile">
+                    <StackLayout col="0">
+                        <Label text="數量 *" class="form-label-mobile"></Label>
+                        <TextField [(ngModel)]="newAmount" keyboardType="number" hint="1" class="form-input-mobile"></TextField>
                     </StackLayout>
-                </ScrollView>
+                    
+                    <StackLayout col="2">
+                        <Label text="價格 (NT$)" class="form-label-mobile"></Label>
+                        <TextField [(ngModel)]="newPrice" keyboardType="number" hint="0" class="form-input-mobile"></TextField>
+                    </StackLayout>
+                </GridLayout>
+                
+                <!-- Expiry Date -->
+                <StackLayout class="form-group-mobile">
+                    <Label text="到期日期 *" class="form-label-mobile"></Label>
+                    <GridLayout columns="*, 10, *, 10, *" class="date-inputs-mobile">
+                        <TextField col="0" [(ngModel)]="newDateYear" keyboardType="number" hint="年" class="form-input-mobile date-input-mobile"></TextField>
+                        <TextField col="2" [(ngModel)]="newDateMonth" keyboardType="number" hint="月" class="form-input-mobile date-input-mobile"></TextField>
+                        <TextField col="4" [(ngModel)]="newDateDay" keyboardType="number" hint="日" class="form-input-mobile date-input-mobile"></TextField>
+                    </GridLayout>
+                </StackLayout>
+                
+                <!-- Shop and Category Row -->
+                <GridLayout columns="*, 15, *" class="form-group-mobile">
+                    <StackLayout col="0">
+                        <Label text="購買商店" class="form-label-mobile"></Label>
+                        <TextField [(ngModel)]="newShop" hint="商店名稱" class="form-input-mobile"></TextField>
+                    </StackLayout>
+                    
+                    <StackLayout col="2">
+                        <Label text="類別" class="form-label-mobile"></Label>
+                        <TextField [(ngModel)]="newCategory" hint="零食/飲品/主食" class="form-input-mobile"></TextField>
+                    </StackLayout>
+                </GridLayout>
+                
+                <!-- Description Field -->
+                <StackLayout class="form-group-mobile">
+                    <Label text="商品說明" class="form-label-mobile"></Label>
+                    <TextView [(ngModel)]="newDescription" hint="商品描述或備註" class="form-textarea-mobile"></TextView>
+                </StackLayout>
+                
+                <!-- Photo Field -->
+                <StackLayout class="form-group-mobile">
+                    <Label text="商品圖片" class="form-label-mobile"></Label>
+                    <Button text="📷 選擇圖片" (tap)="onSelectPhoto()" class="photo-btn-mobile"></Button>
+                </StackLayout>
+                
+                <!-- Action Buttons -->
+                <GridLayout columns="*, 15, *" class="action-buttons-mobile">
+                    <Button col="0" text="清除" (tap)="onClear()" class="clear-btn-mobile"></Button>
+                    <Button col="2" text="新增食品" (tap)="onAdd()" class="add-btn-mobile"></Button>
+                </GridLayout>
+                
+                <!-- Contentful Notice -->
+                <StackLayout class="contentful-notice">
+                    <Label text="💡 提示" class="notice-title"></Label>
+                    <Label text="目前新增的食品僅保存在本地。若要同步到 Contentful，請設置 Management API。" 
+           class="notice-text" textWrap="true"></Label>
+                </StackLayout>
             </StackLayout>
-        </GridLayout>
+        </ScrollView>
     </GridLayout>
 </GridLayout>

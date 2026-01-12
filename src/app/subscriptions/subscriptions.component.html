@@ -1,123 +1,152 @@
-<GridLayout rows="*" height="100%" width="100%" class="bg-purple">
-    <TabView height="100%" width="100%" selectedIndex="0" androidTabsPosition="bottom" selectedTabTextColor="#00E676" tabBackgroundColor="#6200EE" selectedTabBackgroundColor="#6200EE" tabTextColor="#ffffff">
-        <!-- Subscription List Tab -->
-        <TabViewItem title="訂閱清單">
-            <GridLayout rows="auto, *" height="100%" width="100%">
-                <!-- Header -->
-                <GridLayout row="0" columns="*, auto" class="p-15 m-b-10" style="background: rgba(255, 255, 255, 0.1);">
-                    <StackLayout col="0" orientation="horizontal" verticalAlignment="center">
-                        <Label text="訂閱清單" class="h1 text-white font-weight-bold m-r-10"></Label>
-                        <Label text="● 同步" class="body text-green font-weight-bold"></Label>
+<!-- Mobile Layout -->
+<GridLayout rows="auto, auto, auto, *" height="100%" width="100%" class="mobile-container">
+    <!-- ActionBar -->
+    <ActionBar row="0" class="action-bar">
+        <NavigationButton visibility="hidden"></NavigationButton>
+        <GridLayout columns="50, *">
+            <Label class="action-bar-title" text="訂閱管理" colSpan="2"></Label>
+            <Label class="fas" text="&#xf0c9;" (tap)="onDrawerButtonTap()"></Label>
+        </GridLayout>
+    </ActionBar>
+    
+    <!-- Top Header -->
+    <GridLayout row="1" columns="auto, *, auto" class="mobile-header">
+        <Label col="0" text="📋" class="app-icon"></Label>
+        <Label col="1" text="訂閱管理" class="page-title"></Label>
+        <Button col="2" text="🔄" (tap)="onSync()" class="sync-btn"></Button>
+    </GridLayout>
+    
+    <!-- Tab Navigation -->
+    <GridLayout row="2" columns="*, *" class="tab-navigation">
+        <Button col="0" [text]="'📋 訂閱清單 (' + subscriptions.length + ')'" 
+                [class]="'tab-btn ' + (activeTab === 'list' ? 'active' : '')" 
+                (tap)="setActiveTab('list')"></Button>
+        <Button col="1" text="➕ 新增訂閱" 
+                [class]="'tab-btn ' + (activeTab === 'add' ? 'active' : '')" 
+                (tap)="setActiveTab('add')"></Button>
+    </GridLayout>
+    
+    <!-- Content Area -->
+    <GridLayout row="3" class="content-area">
+        <!-- Subscription List View -->
+        <ScrollView *ngIf="activeTab === 'list'" class="subscription-list-view">
+            <StackLayout class="subscription-items-mobile">
+                <!-- Action Bar -->
+                <GridLayout columns="*, auto, auto, auto" class="action-bar-mobile">
+                    <Label col="0" [text]="getConnectionStatus()" [class]="'connection-status ' + getConnectionStatusClass()"></Label>
+                    <Button col="1" text="🔍" (tap)="onSearch()" class="action-btn-small"></Button>
+                    <Button col="2" text="🏷️" (tap)="onFilterByCategory()" class="action-btn-small"></Button>
+                    <Button col="3" text="⏰" (tap)="onCheckExpiring()" class="action-btn-small"></Button>
+                </GridLayout>
+
+                <!-- Loading Indicator -->
+                <ActivityIndicator *ngIf="isLoading" busy="true" class="loading-indicator"></ActivityIndicator>
+
+                <GridLayout *ngFor="let item of subscriptions" columns="auto, *, auto" class="subscription-item-mobile" (tap)="onCardTap(item)">
+                    <!-- Service Icon -->
+                    <StackLayout col="0" class="service-icon-mobile">
+                        <Label text="💳" class="service-icon-text" *ngIf="item.price > 0"></Label>
+                        <Label text="🆓" class="service-icon-text" *ngIf="item.price === 0"></Label>
                     </StackLayout>
-                    <Button col="1" text="🔄" (tap)="onSync()" class="btn btn-sm" style="background: rgba(255, 255, 255, 0.2); color: white; border-radius: 20; width: 40; height: 40;"></Button>
+                    
+                    <!-- Service Details -->
+                    <StackLayout col="1" class="service-details-mobile">
+                        <Label [text]="item.name" class="service-name-mobile" textWrap="true"></Label>
+                        <GridLayout columns="auto, auto, *" class="service-meta-mobile">
+                            <Label col="0" [text]="item.price === 0 ? '免費' : 'NT$' + item.price" class="meta-text-mobile price-mobile"></Label>
+                            <Label col="1" [text]="item.category" class="meta-text-mobile category-mobile" *ngIf="item.category"></Label>
+                        </GridLayout>
+                        <Label [text]="'下次付款: ' + formatDate(item.nextDate)" class="next-payment-mobile"></Label>
+                        <Label [text]="item.account" class="account-name-mobile" *ngIf="item.account"></Label>
+                    </StackLayout>
+                    
+                    <!-- Action Button -->
+                    <StackLayout col="2" class="action-btn-container-mobile">
+                        <Button text="⋯" (tap)="onCardMenu(item, $event)" class="menu-btn-mobile"></Button>
+                    </StackLayout>
                 </GridLayout>
                 
-                <!-- Subscription List -->
-                <ListView row="1" [items]="subscriptions" class="list-group" separatorColor="transparent">
-                    <ng-template let-item="item">
-                        <GridLayout columns="*, auto" class="list-group-item m-x-15 m-b-15 p-20" style="background: rgba(102, 126, 234, 0.8); border-radius: 12;">
-                            <!-- Subscription Info -->
-                            <StackLayout col="0">
-                                <Label [text]="item.name" class="h2 font-weight-bold m-b-8 text-white" textWrap="true"></Label>
-                                
-                                <!-- Price and Account Info -->
-                                <GridLayout columns="auto, *" class="m-b-5" *ngIf="item.price > 0">
-                                    <Label col="0" text="價格:" class="body text-white m-r-5"></Label>
-                                    <Label col="1" [text]="'$' + item.price" class="body text-white font-weight-bold"></Label>
-                                </GridLayout>
-                                <GridLayout columns="auto, *" class="m-b-5" *ngIf="item.price === 0">
-                                    <Label col="0" text="價格:" class="body text-white m-r-5"></Label>
-                                    <Label col="1" text="免費" class="body text-green font-weight-bold"></Label>
-                                </GridLayout>
-                                
-                                <!-- Account Info -->
-                                <GridLayout columns="auto, *" class="m-b-5" *ngIf="item.account">
-                                    <Label col="0" text="帳號:" class="body text-white m-r-5"></Label>
-                                    <Label col="1" [text]="item.account" class="body text-white"></Label>
-                                </GridLayout>
-                                
-                                <!-- Website -->
-                                <Label [text]="item.site" class="caption text-white m-b-5" textWrap="true" *ngIf="item.site"></Label>
-                                
-                                <!-- Next Payment Date -->
-                                <GridLayout columns="auto, *" class="m-b-5">
-                                    <Label col="0" text="下次付款:" class="caption text-white m-r-5"></Label>
-                                    <Label col="1" [text]="item.nextDate" class="caption text-white font-weight-bold"></Label>
-                                </GridLayout>
-                                
-                                <!-- Note -->
-                                <Label [text]="item.note" class="caption text-white" textWrap="true" *ngIf="item.note" style="font-style: italic;"></Label>
-                            </StackLayout>
-                            
-                            <!-- Action Button -->
-                            <StackLayout col="1" verticalAlignment="top" horizontalAlignment="right">
-                                <Button text="🗑️" (tap)="onDelete(item)" class="btn btn-sm" style="background: rgba(255, 255, 255, 0.2); color: white; border-radius: 20;" width="40" height="40"></Button>
-                            </StackLayout>
-                        </GridLayout>
-                    </ng-template>
-                </ListView>
-            </GridLayout>
-        </TabViewItem>
-
-        <!-- Add New Subscription Tab -->
-        <TabViewItem title="新增訂閱">
-            <ScrollView style="background: rgba(255, 255, 255, 0.95);">
-                <StackLayout class="p-20">
-                    <Label text="新增訂閱" class="h1 font-weight-bold m-b-25 text-center" style="color: #333;"></Label>
-                    
-                    <!-- Name Field -->
-                    <StackLayout class="m-b-20">
-                        <Label text="名稱 (Name)" class="label font-weight-bold m-b-8" style="color: #555;"></Label>
-                        <TextField [(ngModel)]="newSubName" hint="例如: Netflix" class="input p-15" style="background: #f8f9fa; border-radius: 8; border-width: 1; border-color: #e9ecef; color: #333;"></TextField>
-                    </StackLayout>
-                    
-                    <!-- Price Field -->
-                    <StackLayout class="m-b-20">
-                        <Label text="價格 (Price)" class="label font-weight-bold m-b-8" style="color: #555;"></Label>
-                        <GridLayout columns="*, auto">
-                            <TextField col="0" [(ngModel)]="newSubPrice" keyboardType="number" hint="0" class="input p-15" style="background: #f8f9fa; border-radius: 8; border-width: 1; border-color: #e9ecef; color: #333;"></TextField>
-                            <Label col="1" text="NT$" class="body m-l-10" verticalAlignment="center" style="color: #666;"></Label>
-                        </GridLayout>
-                    </StackLayout>
-                    
-                    <!-- Next Payment Date -->
-                    <StackLayout class="m-b-20">
-                        <Label text="下次付款日期 (Next Date)" class="label font-weight-bold m-b-8" style="color: #555;"></Label>
-                        <GridLayout columns="*, 10, *, 10, *">
-                            <TextField col="0" [(ngModel)]="newSubDateYear" keyboardType="number" hint="2026" class="input p-15 text-center" style="background: #f8f9fa; border-radius: 8; border-width: 1; border-color: #e9ecef; color: #333;"></TextField>
-                            <TextField col="2" [(ngModel)]="newSubDateMonth" keyboardType="number" hint="1" class="input p-15 text-center" style="background: #f8f9fa; border-radius: 8; border-width: 1; border-color: #e9ecef; color: #333;"></TextField>
-                            <TextField col="4" [(ngModel)]="newSubDateDay" keyboardType="number" hint="12" class="input p-15 text-center" style="background: #f8f9fa; border-radius: 8; border-width: 1; border-color: #e9ecef; color: #333;"></TextField>
-                        </GridLayout>
-                        <Label text="年          月          日" class="caption text-center m-t-5" style="color: #999;"></Label>
-                    </StackLayout>
-                    
-                    <!-- Site Field -->
-                    <StackLayout class="m-b-20">
-                        <Label text="網站 (Site)" class="label font-weight-bold m-b-8" style="color: #555;"></Label>
-                        <TextField [(ngModel)]="newSubSite" hint="https://..." class="input p-15" style="background: #f8f9fa; border-radius: 8; border-width: 1; border-color: #e9ecef; color: #333;"></TextField>
-                    </StackLayout>
-                    
-                    <!-- Account Field -->
-                    <StackLayout class="m-b-20">
-                        <Label text="帳號 (Account)" class="label font-weight-bold m-b-8" style="color: #555;"></Label>
-                        <TextField [(ngModel)]="newSubAccount" hint="帳號資訊" class="input p-15" style="background: #f8f9fa; border-radius: 8; border-width: 1; border-color: #e9ecef; color: #333;"></TextField>
-                    </StackLayout>
-                    
-                    <!-- Note Field -->
-                    <StackLayout class="m-b-30">
-                        <Label text="備註 (Note)" class="label font-weight-bold m-b-8" style="color: #555;"></Label>
-                        <TextView [(ngModel)]="newSubNote" hint="備註..." class="p-15" height="100" style="background: #f8f9fa; border-radius: 8; border-width: 1; border-color: #e9ecef; color: #333;"></TextView>
-                    </StackLayout>
-                    
-                    <!-- Add Button -->
-                    <Button text="新增 訂閱" (tap)="onAdd()" class="font-weight-bold p-15 text-white" style="background: linear-gradient(135deg, #00E676 0%, #00C853 100%); border-radius: 25; font-size: 18;"></Button>
-                    
-                    <!-- Contentful Notice -->
-                    <StackLayout class="m-t-20 p-15" style="background: rgba(102, 126, 234, 0.1); border-radius: 15;">
-                        <Label text="🔗 Contentful 新增 24 筆訂閱" class="caption text-center font-weight-bold" style="color: #6200EE;"></Label>
-                    </StackLayout>
+                <!-- Empty State -->
+                <StackLayout *ngIf="subscriptions.length === 0 && !isLoading" class="empty-state">
+                    <Label text="📋" class="empty-icon"></Label>
+                    <Label text="尚無訂閱資料" class="empty-text"></Label>
+                    <Label text="點擊上方「新增訂閱」開始添加" class="empty-hint"></Label>
                 </StackLayout>
-            </ScrollView>
-        </TabViewItem>
-    </TabView>
+            </StackLayout>
+        </ScrollView>
+        
+        <!-- Add Subscription Form -->
+        <ScrollView *ngIf="activeTab === 'add'" class="add-subscription-view">
+            <StackLayout class="form-content-mobile">
+                <!-- Name Field -->
+                <StackLayout class="form-group-mobile">
+                    <Label text="服務名稱" class="form-label-mobile"></Label>
+                    <TextField [(ngModel)]="newSubName" hint="請輸入服務名稱" class="form-input-mobile"></TextField>
+                </StackLayout>
+                
+                <!-- Price and Category Row -->
+                <GridLayout columns="*, 15, *" class="form-group-mobile">
+                    <StackLayout col="0">
+                        <Label text="月費價格 (NT$)" class="form-label-mobile"></Label>
+                        <TextField [(ngModel)]="newSubPrice" keyboardType="number" hint="0" class="form-input-mobile"></TextField>
+                    </StackLayout>
+                    
+                    <StackLayout col="2">
+                        <Label text="類別" class="form-label-mobile"></Label>
+                        <TextField [(ngModel)]="newSubCategory" hint="例如: 串流媒體" class="form-input-mobile"></TextField>
+                    </StackLayout>
+                </GridLayout>
+                
+                <!-- Next Payment Date -->
+                <StackLayout class="form-group-mobile">
+                    <Label text="下次付款日期" class="form-label-mobile"></Label>
+                    <GridLayout columns="*, 10, *, 10, *" class="date-inputs-mobile">
+                        <TextField col="0" [(ngModel)]="newSubDateYear" keyboardType="number" hint="年" class="form-input-mobile date-input-mobile"></TextField>
+                        <TextField col="2" [(ngModel)]="newSubDateMonth" keyboardType="number" hint="月" class="form-input-mobile date-input-mobile"></TextField>
+                        <TextField col="4" [(ngModel)]="newSubDateDay" keyboardType="number" hint="日" class="form-input-mobile date-input-mobile"></TextField>
+                    </GridLayout>
+                </StackLayout>
+                
+                <!-- Website Field -->
+                <StackLayout class="form-group-mobile">
+                    <Label text="官方網站" class="form-label-mobile"></Label>
+                    <TextField [(ngModel)]="newSubSite" hint="https://..." class="form-input-mobile"></TextField>
+                </StackLayout>
+                
+                <!-- Account Field -->
+                <StackLayout class="form-group-mobile">
+                    <Label text="帳號資訊" class="form-label-mobile"></Label>
+                    <TextField [(ngModel)]="newSubAccount" hint="登入帳號或備註" class="form-input-mobile"></TextField>
+                </StackLayout>
+
+                <!-- Description Field -->
+                <StackLayout class="form-group-mobile">
+                    <Label text="服務說明" class="form-label-mobile"></Label>
+                    <TextField [(ngModel)]="newSubDescription" hint="服務描述" class="form-input-mobile"></TextField>
+                </StackLayout>
+                
+                <!-- Note Field -->
+                <StackLayout class="form-group-mobile">
+                    <Label text="備註" class="form-label-mobile"></Label>
+                    <TextView [(ngModel)]="newSubNote" hint="其他備註資訊..." class="field-textarea"></TextView>
+                </StackLayout>
+
+                <!-- Quick Templates -->
+                <StackLayout class="form-group-mobile">
+                    <Label text="快速模板" class="form-label-mobile"></Label>
+                    <GridLayout columns="*, *, *" class="template-grid-mobile">
+                        <Button col="0" text="📺 Netflix" class="template-btn-mobile" (tap)="useTemplate('netflix')"></Button>
+                        <Button col="1" text="🎵 Spotify" class="template-btn-mobile" (tap)="useTemplate('spotify')"></Button>
+                        <Button col="2" text="☁️ iCloud" class="template-btn-mobile" (tap)="useTemplate('icloud')"></Button>
+                    </GridLayout>
+                </StackLayout>
+                
+                <!-- Action Buttons -->
+                <GridLayout columns="*, 15, *" class="action-buttons-mobile">
+                    <Button col="0" text="清除" (tap)="clearForm()" class="clear-btn-mobile"></Button>
+                    <Button col="2" text="新增訂閱" (tap)="onAdd()" class="add-btn-mobile"></Button>
+                </GridLayout>
+            </StackLayout>
+        </ScrollView>
+    </GridLayout>
 </GridLayout>
