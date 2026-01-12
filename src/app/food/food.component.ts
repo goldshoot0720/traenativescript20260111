@@ -80,7 +80,7 @@ export class FoodComponent implements OnInit {
   newPrice = "";
   newDateYear = 2026;
   newDateMonth = 1;
-  newDateDay = 11;
+  newDateDay = 12;
   newShop = "";
   newHash = "";
   

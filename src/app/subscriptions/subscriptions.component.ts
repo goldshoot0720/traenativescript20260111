@@ -57,7 +57,7 @@ export class SubscriptionsComponent implements OnInit {
   newSubPrice = "";
   newSubDateYear = 2026;
   newSubDateMonth = 1;
-  newSubDateDay = 11;
+  newSubDateDay = 12;
   newSubSite = "";
   newSubAccount = "";
   newSubNote = "";
