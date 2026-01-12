@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, BehaviorSubject, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
-import { CONTENTFUL_CONFIG } from '../config/contentful.config';
 
 export interface FoodItem {
   id: string;
@@ -26,9 +25,9 @@ export class ContentfulService {
   public foodItems$ = this.foodItemsSubject.asObservable();
   
   // Contentful 配置
-  private readonly SPACE_ID = CONTENTFUL_CONFIG.spaceId;
-  private readonly ACCESS_TOKEN = CONTENTFUL_CONFIG.accessToken;
-  private readonly CONTENT_TYPE_ID = CONTENTFUL_CONFIG.contentTypes.foodItem;
+  private readonly SPACE_ID = 'your-space-id';
+  private readonly ACCESS_TOKEN = 'your-access-token';
+  private readonly CONTENT_TYPE_ID = 'foodItem';
   private readonly BASE_URL = `https://cdn.contentful.com/spaces/${this.SPACE_ID}`;
 
   constructor(private http: HttpClient) {}

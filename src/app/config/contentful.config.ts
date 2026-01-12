@@ -10,9 +10,9 @@ export interface ContentfulConfig {
 
 // 開發環境配置
 export const CONTENTFUL_CONFIG: ContentfulConfig = {
-  spaceId: process.env['CONTENTFUL_SPACE_ID'] || 'your-space-id',
-  accessToken: process.env['CONTENTFUL_ACCESS_TOKEN'] || 'your-access-token',
-  environment: process.env['CONTENTFUL_ENVIRONMENT'] || 'master',
+  spaceId: 'your-space-id',
+  accessToken: 'your-access-token',
+  environment: 'master',
   contentTypes: {
     foodItem: 'foodItem',
     category: 'category'
