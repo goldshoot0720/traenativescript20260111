@@ -17,6 +17,19 @@ export interface FoodItem {
   updatedAt?: string;
 }
 
+export interface SubscriptionItem {
+  id: string;
+  name: string;
+  price: number;
+  account: string;
+  site: string;
+  nextDate: string;
+  note?: string;
+  category?: string;
+  description?: string;
+  createdAt?: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -24,10 +37,14 @@ export class ContentfulService {
   private foodItemsSubject = new BehaviorSubject<FoodItem[]>([]);
   public foodItems$ = this.foodItemsSubject.asObservable();
   
-  // Contentful 配置
-  private readonly SPACE_ID = 'your-space-id';
-  private readonly ACCESS_TOKEN = 'your-access-token';
-  private readonly CONTENT_TYPE_ID = 'foodItem';
+  private subscriptionsSubject = new BehaviorSubject<SubscriptionItem[]>([]);
+  public subscriptions$ = this.subscriptionsSubject.asObservable();
+  
+  // Contentful 配置 - 請替換為你的實際值
+  private readonly SPACE_ID = 'your-actual-space-id';  // 替換為你的 Space ID
+  private readonly ACCESS_TOKEN = 'your-actual-access-token';  // 替換為你的 Access Token
+  private readonly FOOD_CONTENT_TYPE_ID = 'foodItem';  // 食品管理的 Content Type ID
+  private readonly SUBSCRIPTION_CONTENT_TYPE_ID = 'subscription';  // 訂閱管理的 Content Type ID
   private readonly BASE_URL = `https://cdn.contentful.com/spaces/${this.SPACE_ID}`;
 
   constructor(private http: HttpClient) {}
@@ -43,7 +60,7 @@ export class ContentfulService {
     return this.http.get<any>(`${this.BASE_URL}/entries`, {
       headers,
       params: {
-        content_type: this.CONTENT_TYPE_ID,
+        content_type: this.FOOD_CONTENT_TYPE_ID,
         order: '-sys.createdAt'
       }
     }).pipe(
@@ -87,7 +104,7 @@ export class ContentfulService {
     return this.http.get<any>(`${this.BASE_URL}/entries`, {
       headers,
       params: {
-        content_type: this.CONTENT_TYPE_ID,
+        content_type: this.FOOD_CONTENT_TYPE_ID,
         'fields.name[match]': query
       }
     }).pipe(
@@ -114,7 +131,7 @@ export class ContentfulService {
     return this.http.get<any>(`${this.BASE_URL}/entries`, {
       headers,
       params: {
-        content_type: this.CONTENT_TYPE_ID,
+        content_type: this.FOOD_CONTENT_TYPE_ID,
         'fields.category': category
       }
     }).pipe(
@@ -143,7 +160,7 @@ export class ContentfulService {
     return this.http.get<any>(`${this.BASE_URL}/entries`, {
       headers,
       params: {
-        content_type: this.CONTENT_TYPE_ID,
+        content_type: this.FOOD_CONTENT_TYPE_ID,
         'fields.expiryDate[lte]': futureDateString
       }
     }).pipe(
@@ -244,6 +261,187 @@ export class ContentfulService {
   private getFallbackDataObservable(): Observable<FoodItem[]> {
     const fallbackData = this.getFallbackData();
     this.foodItemsSubject.next(fallbackData);
+    return of(fallbackData);
+  }
+
+  // ==================== 訂閱管理相關方法 ====================
+
+  /**
+   * 獲取所有訂閱項目
+   */
+  getSubscriptions(): Observable<SubscriptionItem[]> {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.ACCESS_TOKEN}`
+    });
+
+    return this.http.get<any>(`${this.BASE_URL}/entries`, {
+      headers,
+      params: {
+        content_type: this.SUBSCRIPTION_CONTENT_TYPE_ID,
+        order: '-sys.createdAt'
+      }
+    }).pipe(
+      map((response: any) => {
+        const items = response.items.map((entry: any) => this.mapContentfulToSubscription(entry));
+        this.subscriptionsSubject.next(items);
+        return items;
+      }),
+      catchError(error => {
+        console.error('Error fetching subscriptions:', error);
+        return this.getSubscriptionFallbackDataObservable();
+      })
+    );
+  }
+
+  /**
+   * 根據 ID 獲取單個訂閱項目
+   */
+  getSubscription(id: string): Observable<SubscriptionItem | null> {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.ACCESS_TOKEN}`
+    });
+
+    return this.http.get<any>(`${this.BASE_URL}/entries/${id}`, { headers }).pipe(
+      map((entry: any) => this.mapContentfulToSubscription(entry)),
+      catchError(error => {
+        console.error('Error fetching subscription:', error);
+        return of(null);
+      })
+    );
+  }
+
+  /**
+   * 搜索訂閱項目
+   */
+  searchSubscriptions(query: string): Observable<SubscriptionItem[]> {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.ACCESS_TOKEN}`
+    });
+
+    return this.http.get<any>(`${this.BASE_URL}/entries`, {
+      headers,
+      params: {
+        content_type: this.SUBSCRIPTION_CONTENT_TYPE_ID,
+        'fields.name[match]': query
+      }
+    }).pipe(
+      map((response: any) => response.items.map((entry: any) => this.mapContentfulToSubscription(entry))),
+      catchError(error => {
+        console.error('Error searching subscriptions:', error);
+        const fallbackData = this.getSubscriptionFallbackData();
+        const filtered = fallbackData.filter(item => 
+          item.name.toLowerCase().includes(query.toLowerCase())
+        );
+        return of(filtered);
+      })
+    );
+  }
+
+  /**
+   * 根據類別獲取訂閱項目
+   */
+  getSubscriptionsByCategory(category: string): Observable<SubscriptionItem[]> {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.ACCESS_TOKEN}`
+    });
+
+    return this.http.get<any>(`${this.BASE_URL}/entries`, {
+      headers,
+      params: {
+        content_type: this.SUBSCRIPTION_CONTENT_TYPE_ID,
+        'fields.category': category
+      }
+    }).pipe(
+      map((response: any) => response.items.map((entry: any) => this.mapContentfulToSubscription(entry))),
+      catchError(error => {
+        console.error('Error fetching subscriptions by category:', error);
+        const fallbackData = this.getSubscriptionFallbackData();
+        const filtered = fallbackData.filter(item => item.category === category);
+        return of(filtered);
+      })
+    );
+  }
+
+  /**
+   * 獲取即將到期的訂閱項目
+   */
+  getExpiringSubscriptions(days: number = 30): Observable<SubscriptionItem[]> {
+    const futureDate = new Date();
+    futureDate.setDate(futureDate.getDate() + days);
+    const futureDateString = futureDate.toISOString();
+
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.ACCESS_TOKEN}`
+    });
+    
+    return this.http.get<any>(`${this.BASE_URL}/entries`, {
+      headers,
+      params: {
+        content_type: this.SUBSCRIPTION_CONTENT_TYPE_ID,
+        'fields.nextDate[lte]': futureDateString
+      }
+    }).pipe(
+      map((response: any) => response.items.map((entry: any) => this.mapContentfulToSubscription(entry))),
+      catchError(error => {
+        console.error('Error fetching expiring subscriptions:', error);
+        const fallbackData = this.getSubscriptionFallbackData();
+        const filtered = fallbackData.filter(item => new Date(item.nextDate) <= futureDate);
+        return of(filtered);
+      })
+    );
+  }
+
+  /**
+   * 將 Contentful 條目映射為 SubscriptionItem 介面
+   */
+  private mapContentfulToSubscription(entry: any): SubscriptionItem {
+    const fields = entry.fields || {};
+    return {
+      id: entry.sys?.id || '',
+      name: fields.name || '',
+      price: fields.price || 0,
+      account: fields.account || '',
+      site: fields.site || '',
+      nextDate: fields.nextDate || '',
+      note: fields.note || '',
+      category: fields.category || '',
+      description: fields.description || '',
+      createdAt: entry.sys?.createdAt || ''
+    };
+  }
+
+  /**
+   * 訂閱後備數據
+   */
+  private getSubscriptionFallbackData(): SubscriptionItem[] {
+    return [
+      {
+        id: '1',
+        name: '天晟/處方箋/心臟內科',
+        price: 0,
+        account: '',
+        site: 'https://www.tcmg.com.tw/index.php/main/schedule_time?id=18',
+        nextDate: '2027-02-06T16:00:00.000Z',
+        category: '醫療',
+        description: '心臟內科定期回診'
+      },
+      {
+        id: '2',
+        name: 'Perplexity Pro',
+        price: 660,
+        account: 'goldshoot0720',
+        site: 'https://www.perplexity.ai/',
+        nextDate: '2026-11-06T16:00:00.000Z',
+        category: 'AI工具',
+        description: 'AI搜索引擎專業版'
+      }
+      // 更多後備資料...
+    ];
+  }
+
+  private getSubscriptionFallbackDataObservable(): Observable<SubscriptionItem[]> {
+    const fallbackData = this.getSubscriptionFallbackData();
+    this.subscriptionsSubject.next(fallbackData);
     return of(fallbackData);
   }
 

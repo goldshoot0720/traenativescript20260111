@@ -1,21 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core'
 import { RadSideDrawer } from 'nativescript-ui-sidedrawer'
 import { Application, Dialogs } from '@nativescript/core'
-import { ContentfulService } from '../services/contentful.service'
+import { ContentfulService, SubscriptionItem } from '../services/contentful.service'
 import { Subscription } from 'rxjs'
-
-interface SubscriptionItem {
-    id: string;
-    name: string;
-    price: number;
-    account: string;
-    site: string;
-    nextDate: string;
-    note?: string;
-    category?: string;
-    description?: string;
-    createdAt?: string;
-}
 
 @Component({
   selector: 'Subscriptions',
@@ -23,48 +10,7 @@ interface SubscriptionItem {
   styleUrls: ['./subscriptions.component.scss']
 })
 export class SubscriptionsComponent implements OnInit, OnDestroy {
-  subscriptions: SubscriptionItem[] = [
-      {
-          id: '1',
-          name: '天晟/處方箋/心臟內科',
-          price: 0,
-          account: '',
-          site: 'https://www.tcmg.com.tw/index.php/main/schedule_time?id=18',
-          nextDate: '2027-02-06 16:00',
-          category: '醫療',
-          description: '心臟內科定期回診'
-      },
-      {
-          id: '2',
-          name: '天晟/處方箋/身心科',
-          price: 0,
-          account: '',
-          site: 'https://www.tcmg.com.tw/index.php/main/schedule_time?id=14',
-          nextDate: '2027-02-06 16:00',
-          category: '醫療',
-          description: '身心科定期回診'
-      },
-      {
-          id: '3',
-          name: 'Perplexity Pro/goldshoot0720',
-          price: 660,
-          account: 'goldshoot0720',
-          site: 'https://www.perplexity.ai/',
-          nextDate: '2026-11-06 16:00',
-          category: 'AI工具',
-          description: 'AI搜索引擎專業版'
-      },
-       {
-          id: '4',
-          name: 'Cloudflare Domain',
-          price: 350,
-          account: '',
-          site: 'https://www.tpe12thmayor2038from2025.com/',
-          nextDate: '2026-09-15 16:00',
-          category: '網域',
-          description: '網域名稱註冊服務'
-      }
-  ];
+  subscriptions: SubscriptionItem[] = [];
   
   private subscriptionSubs: Subscription[] = [];
   isLoading = false;
@@ -99,17 +45,33 @@ export class SubscriptionsComponent implements OnInit, OnDestroy {
   }
 
   private checkConnection(): void {
-    // 模擬連接檢查，實際可以連接到 Contentful 或其他服務
-    this.isConnected = true;
+    const sub = this.contentfulService.checkConnection().subscribe(
+      connected => {
+        this.isConnected = connected;
+        console.log('Contentful connection status:', connected);
+      },
+      error => {
+        console.error('Error checking connection:', error);
+        this.isConnected = false;
+      }
+    );
+    this.subscriptionSubs.push(sub);
   }
 
   private loadSubscriptions(): void {
     this.isLoading = true;
-    // 模擬載入過程
-    setTimeout(() => {
-      this.isLoading = false;
-      console.log('Loaded subscriptions:', this.subscriptions.length);
-    }, 500);
+    const sub = this.contentfulService.getSubscriptions().subscribe(
+      subscriptions => {
+        this.subscriptions = subscriptions;
+        this.isLoading = false;
+        console.log('Loaded subscriptions from Contentful:', subscriptions.length);
+      },
+      error => {
+        console.error('Error loading subscriptions:', error);
+        this.isLoading = false;
+      }
+    );
+    this.subscriptionSubs.push(sub);
   }
 
   onDrawerButtonTap(): void {
