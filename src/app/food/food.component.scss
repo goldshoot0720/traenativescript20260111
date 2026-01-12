@@ -1,0 +1,251 @@
+/* Main Container */
+.main-container {
+    background-color: #6a4c93;
+}
+
+/* Sidebar Styles */
+.sidebar {
+    background-color: #5a3d7a;
+    padding: 0;
+}
+
+.app-header {
+    background-color: #8b5cf6;
+    padding: 15;
+    margin-bottom: 20;
+}
+
+.app-icon {
+    font-size: 24;
+    color: #ffffff;
+    margin-right: 10;
+}
+
+.app-title {
+    font-size: 18;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.nav-menu {
+    padding: 10;
+}
+
+.nav-item {
+    background-color: transparent;
+    color: rgba(255, 255, 255, 0.8);
+    border-width: 0;
+    padding: 15;
+    margin-bottom: 5;
+    text-align: left;
+    font-size: 14;
+    border-radius: 8;
+}
+
+.nav-item.active {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    font-weight: bold;
+}
+
+/* Main Content Area */
+.main-content {
+    background-color: #ffffff;
+    margin: 10;
+    border-radius: 12;
+}
+
+.content-header {
+    background-color: #6a4c93;
+    padding: 20;
+    border-radius: 12;
+}
+
+.page-title {
+    font-size: 24;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.sync-btn {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    border-width: 1;
+    border-color: rgba(255, 255, 255, 0.3);
+    border-radius: 8;
+    padding: 10;
+    font-size: 14;
+}
+
+/* Content Body */
+.content-body {
+    padding: 20;
+    background-color: #ffffff;
+}
+
+/* Food List Section */
+.food-list-section {
+    margin-right: 20;
+}
+
+.tab-header {
+    margin-bottom: 20;
+}
+
+.tab-btn {
+    background-color: transparent;
+    color: #6a4c93;
+    border-width: 0;
+    padding: 10;
+    font-size: 16;
+    border-radius: 8;
+    margin-right: 10;
+}
+
+.tab-btn.active {
+    background-color: #6a4c93;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.food-list-container {
+    height: 500;
+}
+
+.food-item {
+    background-color: rgba(139, 92, 246, 0.1);
+    margin-bottom: 15;
+    padding: 15;
+    border-radius: 12;
+    border-width: 1;
+    border-color: rgba(139, 92, 246, 0.2);
+}
+
+.product-image {
+    width: 60;
+    height: 60;
+    margin-right: 15;
+    border-radius: 8;
+    background-color: rgba(139, 92, 246, 0.1);
+}
+
+.product-img {
+    width: 60;
+    height: 60;
+    border-radius: 8;
+}
+
+.placeholder-icon {
+    font-size: 24;
+    color: #8b5cf6;
+    text-align: center;
+    vertical-align: center;
+}
+
+.product-name {
+    font-size: 16;
+    font-weight: bold;
+    color: #2d1b69;
+    margin-bottom: 8;
+}
+
+.meta-text {
+    font-size: 14;
+    color: #666666;
+    margin-right: 15;
+}
+
+.meta-text.price {
+    color: #8b5cf6;
+    font-weight: bold;
+}
+
+.expiry-date {
+    font-size: 14;
+    color: #e74c3c;
+    font-weight: bold;
+}
+
+.delete-btn {
+    background-color: rgba(231, 76, 60, 0.1);
+    color: #e74c3c;
+    border-width: 1;
+    border-color: rgba(231, 76, 60, 0.3);
+    border-radius: 8;
+    width: 40;
+    height: 40;
+    font-size: 16;
+}
+
+/* Add Food Section */
+.add-food-section {
+    background-color: rgba(139, 92, 246, 0.05);
+    border-radius: 12;
+    padding: 20;
+}
+
+.section-title {
+    font-size: 20;
+    font-weight: bold;
+    color: #2d1b69;
+    text-align: center;
+    margin-bottom: 20;
+}
+
+.form-container {
+    height: 500;
+}
+
+.form-group {
+    margin-bottom: 20;
+}
+
+.form-label {
+    font-size: 14;
+    font-weight: bold;
+    color: #2d1b69;
+    margin-bottom: 8;
+}
+
+.form-input {
+    background-color: rgba(255, 255, 255, 0.8);
+    border-width: 1;
+    border-color: rgba(139, 92, 246, 0.3);
+    border-radius: 8;
+    padding: 12;
+    font-size: 14;
+    color: #333333;
+}
+
+.date-input {
+    text-align: center;
+    font-size: 14;
+}
+
+.photo-btn {
+    background-color: rgba(139, 92, 246, 0.1);
+    color: #8b5cf6;
+    border-width: 1;
+    border-color: rgba(139, 92, 246, 0.3);
+    border-radius: 8;
+    padding: 12;
+    font-size: 14;
+}
+
+.hash-input {
+    background-color: rgba(139, 92, 246, 0.05);
+    border-width: 1;
+    border-color: rgba(139, 92, 246, 0.2);
+}
+
+.add-btn {
+    background-color: #00e676;
+    color: #ffffff;
+    border-width: 0;
+    border-radius: 25;
+    padding: 15;
+    font-size: 16;
+    font-weight: bold;
+    margin-top: 20;
+    width: 100%;
+}

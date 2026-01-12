@@ -15,6 +15,7 @@ interface FoodItem {
 @Component({
   selector: 'Food',
   templateUrl: './food.component.html',
+  styleUrls: ['./food.component.scss']
 })
 export class FoodComponent implements OnInit {
   foodItems: FoodItem[] = [
@@ -84,6 +85,9 @@ export class FoodComponent implements OnInit {
   newShop = "";
   newHash = "";
   
+  // UI state
+  activeTab = 'list';
+  
   constructor() {
     // Use the component constructor to inject providers.
   }
@@ -149,5 +153,10 @@ export class FoodComponent implements OnInit {
   onSelectPhoto(): void {
       console.log("Selecting photo...");
       Dialogs.alert("選擇圖片功能尚未實作");
+  }
+  
+  setActiveTab(tab: string): void {
+      this.activeTab = tab;
+      console.log("Active tab:", tab);
   }
 }
